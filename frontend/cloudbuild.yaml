@@ -9,11 +9,10 @@ steps:
     args: [ 'install' ]
 
   # Build productive files
-  - name: 'gcr.io/cloud-builders/npx'
-    args: [ ng, build, --prod ]
+  - name: 'node:12.0'
+    args: [ 'npm', 'run', 'build', '--prod' ]
 
   # Deploy to google cloud app egnine
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['app', 'deploy', 'client.yaml']
 
-timeout: "1600s"
