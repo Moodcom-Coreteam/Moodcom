@@ -1,0 +1,19 @@
+steps:
+
+  # Install Angular
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install','-g','@angular/cli' ]
+
+  # Install node packages
+  - name: 'gcr.io/cloud-builders/npm'
+    args: [ 'install' ]
+
+  # Build productive files
+  - name: 'node:12.0'
+    args: [ 'npm', 'run', 'build', '--prod' ]
+
+  # Deploy to google cloud app egnine
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['app', 'deploy', 'client.yaml']
+
+timeout: "1600s"
