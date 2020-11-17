@@ -1,0 +1,8 @@
+service: default
+runtime: nodejs12
+handlers:
+- url: /
+  static_files: dist/frontend/index.html
+  upload: frontend/index.html
+- url: /
+  static_dir: dist/frontend
