@@ -32,5 +32,9 @@ app.get('/', async (req, res) => {
     res.send("Hello world from Express application !")
 });
 
+app.get('/api/', (req, res) => {
+    res.send("It works well with routing !");
+});
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log("Listenning on port " + PORT));

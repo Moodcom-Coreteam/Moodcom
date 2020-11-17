@@ -17,10 +17,6 @@
   },
   "author": "Helloïs BARBOSA, Lucie GARRET, Sebyann POUIX, Cécile Seillet, Ravaka Teddy RAKOTONDRABE, Agathe THEVENIN",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/PolyAnalysis-Core-Team/frontend/issues"
-  },
-  "homepage": "https://github.com/PolyAnalysis-Core-Team/frontend#readme",
   "dependencies": {
     "@angular/animations": "~10.1.2",
     "@angular/common": "~10.1.2",

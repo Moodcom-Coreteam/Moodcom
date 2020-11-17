@@ -1,5 +1,7 @@
 service: default
-runtime: nodejs12
+runtime: python27
+api_version: 1
+threadsafe: true
 handlers:
 - url: /
   static_files: dist/frontend/index.html

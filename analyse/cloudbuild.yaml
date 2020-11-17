@@ -1,4 +1,4 @@
 steps:
 - id: 'Deploy analysis to Environment (AppEngine)'
   name: 'gcr.io/cloud-builders/gcloud'
-  args: ['app','deploy','backend-analysis.yaml']
+  args: ['app','deploy','analysis.yaml']

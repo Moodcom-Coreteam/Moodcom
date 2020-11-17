@@ -6,6 +6,6 @@ steps:
 
   # Deploy to google cloud app egnine
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['app', 'deploy', 'backend-api.yaml']
+    args: ['app', 'deploy', 'backend.yaml']
 
 timeout: "1600s"
