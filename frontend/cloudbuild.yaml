@@ -9,8 +9,8 @@ steps:
     args: [ 'install' ]
 
   # Build productive files
-  - name: 'gcr.io/cloud-builders/npm'
-    args: [ run, build, --prod ]
+  - name: 'gcr.io/cloud-builders/npx'
+    args: [ ng, build, --prod ]
 
   # Deploy to google cloud app egnine
   - name: 'gcr.io/cloud-builders/gcloud'
