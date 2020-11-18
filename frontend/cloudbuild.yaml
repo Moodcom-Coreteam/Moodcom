@@ -9,7 +9,8 @@ steps:
     args: [ 'install' ]
 
   # Build productive files
-  - name: 'gcr.io/cloud-builders/npm'
+  - name: 'node:12'
+    entrypoint: npm
     args: [ 'run', 'build', '--prod' ]
 
   # Deploy to google cloud app egnine
