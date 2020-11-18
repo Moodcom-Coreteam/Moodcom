@@ -4,7 +4,7 @@ api_version: 1
 threadsafe: true
 handlers:
 - url: /
-  static_files: dist/frontend/index.html
+  static_files: dist/index.html
   upload: frontend/index.html
 - url: /
-  static_dir: dist/frontend
+  static_dir: dist
