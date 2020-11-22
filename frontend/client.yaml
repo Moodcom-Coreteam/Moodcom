@@ -2,9 +2,13 @@ service: default
 runtime: python27
 api_version: 1
 threadsafe: true
+
+skip_files:
+- ^(?!dist)  # Skip any files not in the dist folder
+
 handlers:
 - url: /
-  static_files: dist/index.html
-  upload: frontend/index.html
+  static_files: dist/frontend/index.html
+  upload: dist/frontend/index.html
 - url: /
-  static_dir: dist
+  static_dir: dist/frontend

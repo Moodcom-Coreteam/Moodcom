@@ -11,9 +11,10 @@ steps:
   # Build productive files
   - name: 'node:12'
     entrypoint: npm
-    args: [ 'run', 'build', '--prod', '--aot' ]
+    args: [ 'run', 'build', '--prod' ]
 
   # Deploy to google cloud app egnine
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['app', 'deploy', 'client.yaml']
+  #   args: ['app', 'deploy', 'client.yaml']
+    args: ['app', 'deploy', 'client.yaml', '--version=prod']
 
