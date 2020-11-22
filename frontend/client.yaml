@@ -11,4 +11,4 @@ handlers:
   static_files: dist/index.html
   upload: dist/index.html
 - url: /
-  static_dir: dist
+  static_dir: frontend
