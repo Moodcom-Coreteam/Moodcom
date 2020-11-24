@@ -8,10 +8,6 @@ steps:
   - name: 'gcr.io/cloud-builders/npm'
     args: [ 'install' ]
 
-  # Display current root files and folder
-  - name: 'bash'
-    args: ['ls']
-
   # Build productive files
   - name: 'node:12'
     entrypoint: npm
@@ -21,4 +17,8 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
   #   args: ['app', 'deploy', 'client.yaml']
     args: ['app', 'deploy', 'client.yaml', '--version=prod']
+
+      # Display current root files and folder
+  - name: 'bash'
+    args: ['ls']
 
