@@ -8,7 +8,7 @@ skip_files:
 
 handlers:
 - url: /
-  static_files: dist/index.html
-  upload: dist/index.html
+  static_files: dist/frontend/index.html
+  upload: frontend/index.html
 - url: /
-  static_dir: frontend
+  static_dir: dist/frontend
