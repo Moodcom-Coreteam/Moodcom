@@ -6,7 +6,7 @@ app = Flask(__name__)
 def index():
     return  'Hello world from ANALYSIS part !'
 
-@app.route('/analyse/')
+@app.route('/analysis/')
 def analyse():
     return  'It works well with routing !'
 
