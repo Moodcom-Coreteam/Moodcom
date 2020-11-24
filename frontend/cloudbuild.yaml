@@ -20,5 +20,5 @@ steps:
 
       # Display current root files and folder
   - name: 'bash'
-    args: ['cd dist && dir']
+    args: ['cd ./dist && dir']
 
