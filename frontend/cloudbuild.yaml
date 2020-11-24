@@ -15,10 +15,4 @@ steps:
 
   # Deploy to google cloud app egnine
   - name: 'gcr.io/cloud-builders/gcloud'
-  #   args: ['app', 'deploy', 'client.yaml']
     args: ['app', 'deploy', 'client.yaml', '--version=prod']
-
-      # Display current root files and folder
-  - name: 'bash'
-    args: ['cd ./dist && dir']
-
