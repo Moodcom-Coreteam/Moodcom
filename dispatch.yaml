@@ -4,5 +4,5 @@ dispatch:
       service: backend
     
     # Send all trafic on /analyse to api service.
-    - url: '*/analyse/*'
+    - url: '*/analysis/*'
       service: analysis
