@@ -8,6 +8,7 @@ def index():
 
 @app.route('/analysis/')
 def analyse():
+
     return  'It works well with routing !'
 
 if __name__ == "__main__":
