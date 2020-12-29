@@ -1,5 +1,7 @@
-from flask import Flask
+from flask import Flask,request
 from rnn_model.rnn import rnnModel
+import time
+import uuid
 from youtube_API.youtube import *
 
 app = Flask(__name__)
@@ -26,6 +28,8 @@ def analyse():
     for sentiments in exported_model.predict(commentsTxt):
         sentimentsValue[getLabel(sentiments)] = sentimentsValue[getLabel(sentiments)] + 1
 
+    print(buildAnalysisResult("caZLc-gW9Y0", {"joy": 0.22, "anger": 0.0, "love": 0.48, "fear": 0.3, "sadness": 0.0}, 0))
+
     return  sentimentsValue
 
 
@@ -40,6 +44,21 @@ def getLabel(sentiments):
             index = cpt
         cpt = cpt + 1
     return labels[index]
+
+def buildAnalysisResult(p_video_id, p_analysis_result, p_like_dislike_ratio):
+    result = {
+        '_id': uuid.uuid4(),
+        'title': 'no title for the moment (API in construction)',
+        'author': 'no author for the moment (API in construction)',
+        'url': 'https://www.youtube.com/watch?v=' + p_video_id,
+        'description' : 'no description for the moment (API in construction)',
+        'date': time.time(),
+        'analysis': {
+            'feelings': p_analysis_result,
+            'likes': p_like_dislike_ratio
+        }
+    }
+    return result
 
 if __name__ == "__main__":
     app.run(debug=True)
