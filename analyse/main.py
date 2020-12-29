@@ -10,8 +10,11 @@ def index():
 
 @app.route('/analysis/')
 def analyse():
+    nbComments = request.args.get('nbComments')
+    videoId = request.args.get('videoId')
+
     #Get YouTube comments
-    commentsThreads = getVideoCommentsThreads(10000, "RkC0l4iekYo")
+    commentsThreads = getVideoCommentsThreads(int(nbComments), videoId)
     commentsTxt = getVideoCommentsTxt(commentsThreads)
 
     #Load the model
