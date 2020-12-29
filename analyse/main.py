@@ -28,10 +28,7 @@ def analyse():
     for sentiments in exported_model.predict(commentsTxt):
         sentimentsValue[getLabel(sentiments)] = sentimentsValue[getLabel(sentiments)] + 1
 
-    print(buildAnalysisResult("caZLc-gW9Y0", {"joy": 0.22, "anger": 0.0, "love": 0.48, "fear": 0.3, "sadness": 0.0}, 0))
-
-    return  sentimentsValue
-
+    return buildAnalysisResult(videoId, sentimentsValue, 0)
 
 def getLabel(sentiments):
     labels = ['anger', 'fear', 'joy', 'love', 'sadness']
