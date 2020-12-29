@@ -1,6 +1,6 @@
+import datetime
 from flask import Flask,request
 from rnn_model.rnn import rnnModel
-import time
 import uuid
 from youtube_API.youtube import *
 
@@ -47,12 +47,12 @@ def getLabel(sentiments):
 
 def buildAnalysisResult(p_video_id, p_analysis_result, p_like_dislike_ratio):
     result = {
-        '_id': uuid.uuid4(),
+        '_id': str(uuid.uuid4()),
         'title': 'no title for the moment (API in construction)',
         'author': 'no author for the moment (API in construction)',
         'url': 'https://www.youtube.com/watch?v=' + p_video_id,
         'description' : 'no description for the moment (API in construction)',
-        'date': time.time(),
+        'date': str(datetime.datetime.now()),
         'analysis': {
             'feelings': p_analysis_result,
             'likes': p_like_dislike_ratio
