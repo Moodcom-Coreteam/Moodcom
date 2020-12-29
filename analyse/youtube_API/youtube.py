@@ -4,7 +4,7 @@ import json
 import googleapiclient.discovery
 import numpy as np
 
-with open("youtube.config.json") as f:
+with open("youtube_API/youtube.config.json") as f:
     s_YOUTUBE_CONFIG = json.load(f)
 
 print(s_YOUTUBE_CONFIG)
