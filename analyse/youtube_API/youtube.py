@@ -1,64 +1,78 @@
 import os
+import json
 
-s_YOUTUBE_CONFIG = open("youtube.config.json", "r")
+import googleapiclient.discovery
+import numpy as np
+
+with open("youtube.config.json") as f:
+    s_YOUTUBE_CONFIG = json.load(f)
 
 print(s_YOUTUBE_CONFIG)
 
-def getVideoComments(p_wanted_comments):
-    api_service_name = "youtube"
-    api_version = "v3"
-
-
-counter = 0
-    nextPageToken = ""
-    videoId = "EKkzbbLYPuI"
+def getVideoCommentsThreads(p_wanted_comments, p_video_id):
     # Disable OAuthlib's HTTPS verification when running locally.
     # *DO NOT* leave this option enabled in production.
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-    api_service_name = "youtube"
-    api_version = "v3"
-    DEVELOPER_KEY = "AIzaSyBAA9qtlKPWmy6UTPuyKIAVm5W9wbOkx4s"
-    youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=DEVELOPER_KEY)
-    comments = np.array([])
-
-    # In[27]:
-
-    request = youtube.commentThreads().list(
-        part="id,replies,snippet",
-        maxResults=100,
-        videoId=videoId
+    
+    youtube = googleapiclient.discovery.build(
+        s_YOUTUBE_CONFIG['API_SERVICE_NAME'],
+        s_YOUTUBE_CONFIG['API_VERSION'],
+        developerKey=s_YOUTUBE_CONFIG['API_KEY']
     )
 
-    # In[28]:
+    #Initialize comments array to receive all comments
+    comments = np.array([])
 
-    for i in range(100):
+    #Get the number of loop the process need to get p_wanted_comments
+    nbNedeedLoop = int(np.ceil(p_wanted_comments / s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"]))
+
+    nextPageToken = ""
+    totalComments = 0
+
+    for i in range(nbNedeedLoop):
         if (len(nextPageToken) == 0):
             request = youtube.commentThreads().list(
                 part="id,replies,snippet",
-                maxResults=100,
-                videoId=videoId
+                maxResults=s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"],
+                videoId=p_video_id
             )
         else:
             request = youtube.commentThreads().list(
                 part="id,replies,snippet",
-                maxResults=100,
-                videoId=videoId,
+                maxResults=s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"],
+                videoId=p_video_id,
                 pageToken=nextPageToken
             )
+
+        #Get the API response executing prebuilt request
         response = request.execute()
+
         if ('nextPageToken' in response):
             nextPageToken = response['nextPageToken']
             comments = np.concatenate([comments, np.array(response['items'])])
-            counter = counter + 1
+            totalComments = totalComments + 1
 
         else:
             nextPageToken = ""
-            comments = np.concatenate([comments, np.array(response['items'])])
-            counter = counter + 1
+            responseItem = np.array(response['items'])
+            comments = np.concatenate([comments, responseItem])
+            totalComments = totalComments + (len(responseItem) / s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"])
             break
 
-    # In[29]:
+    totalComments = int(totalComments * s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"])
+    print("nb comments")
+    print(len(comments))
+    print("estimate nb comments")
+    print(totalComments)
 
-    commentsText = []
-    for comment in comments:
-        commentsText.append(comment['snippet']['topLevelComment']['snippet']['textDisplay'])
+    return comments
+
+def getVideoCommentsTxt(p_comment_threads):
+    commentsTxt = []
+    for comment_thread in p_comment_threads:
+        commentsTxt.append(comment_thread['snippet']['topLevelComment']['snippet']['textDisplay'])
+    return commentsTxt
+
+neededComments = getVideoCommentsThreads(121, "EWyM299OPu8")
+onlyCommentsTxt = getVideoCommentsTxt(neededComments)
+print(onlyCommentsTxt)
