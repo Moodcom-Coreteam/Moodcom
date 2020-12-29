@@ -1,22 +1,34 @@
-from flask import Flask
-import os
-import re
-import string
-import tensorflow as tf
+import datetime
+from flask import Flask,request
+from rnn_model.rnn import rnnModel
+import uuid
+from youtube_API.youtube import *
 
-from tensorflow.keras import layers
-from tensorflow.keras import losses
-from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
-import googleapiclient.discovery
-import numpy as np
 app = Flask(__name__)
-def custom_standardization(input_data):
-  lowercase = tf.strings.lower(input_data)
-  stripped_html = tf.strings.regex_replace(lowercase, '<br />', ' ')
-  return tf.strings.regex_replace(stripped_html,
-                                  '[%s]' % re.escape(string.punctuation),
-                                  '')
 
+@app.route('/')
+def index():
+    return  'Hello world from ANALYSIS part !'
+
+@app.route('/analysis/')
+def analyse():
+    nbComments = request.args.get('nbComments')
+    videoId = request.args.get('videoId')
+
+    #Get YouTube comments
+    commentsThreads = getVideoCommentsThreads(int(nbComments), videoId)
+    commentsTxt = getVideoCommentsTxt(commentsThreads)
+
+    #Load the model
+    exported_model = rnnModel()
+
+    #Doing prediction
+    exported_model.predict(commentsTxt)
+    sentimentsValue = {'joy': 0, 'sadness': 0, 'fear': 0, 'love': 0, 'anger': 0}
+    for sentiments in exported_model.predict(commentsTxt):
+        sentimentsValue[getLabel(sentiments)] = sentimentsValue[getLabel(sentiments)] + 1
+
+    return buildAnalysisResult(videoId, sentimentsValue, 0)
 
 def getLabel(sentiments):
     labels = ['anger', 'fear', 'joy', 'love', 'sadness']
@@ -24,116 +36,26 @@ def getLabel(sentiments):
     maximum = 0
     cpt = 0
     for sentiment in sentiments:
-
         if (maximum < sentiment):
             maximum = sentiment
             index = cpt
         cpt = cpt + 1
     return labels[index]
-@app.route('/')
-def index():
-    return  'Hello world from ANALYSIS part !'
 
-@app.route('/analysis/')
-def analyse():
-    max_features = 10000
-    sequence_length = 250
-
-    vectorize_layer = TextVectorization(
-        standardize=custom_standardization,
-        max_tokens=max_features,
-        output_mode='int',
-        output_sequence_length=sequence_length)
-    # # Récupération des commentaires Youtube
-
-    # In[25]:
-
-
-
-    # In[26]:
-
-    counter = 0
-    nextPageToken = ""
-    videoId = "EKkzbbLYPuI"
-    # Disable OAuthlib's HTTPS verification when running locally.
-    # *DO NOT* leave this option enabled in production.
-    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-    api_service_name = "youtube"
-    api_version = "v3"
-    DEVELOPER_KEY = "AIzaSyBAA9qtlKPWmy6UTPuyKIAVm5W9wbOkx4s"
-    youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=DEVELOPER_KEY)
-    comments = np.array([])
-
-    # In[27]:
-
-    request = youtube.commentThreads().list(
-        part="id,replies,snippet",
-        maxResults=100,
-        videoId=videoId
-    )
-
-    # In[28]:
-
-    for i in range(100):
-        if (len(nextPageToken) == 0):
-            request = youtube.commentThreads().list(
-                part="id,replies,snippet",
-                maxResults=100,
-                videoId=videoId
-            )
-        else:
-            request = youtube.commentThreads().list(
-                part="id,replies,snippet",
-                maxResults=100,
-                videoId=videoId,
-                pageToken=nextPageToken
-            )
-        response = request.execute()
-        if ('nextPageToken' in response):
-            nextPageToken = response['nextPageToken']
-            comments = np.concatenate([comments, np.array(response['items'])])
-            counter = counter + 1
-
-        else:
-            nextPageToken = ""
-            comments = np.concatenate([comments, np.array(response['items'])])
-            counter = counter + 1
-            break
-
-    # In[29]:
-
-    commentsText = []
-    for comment in comments:
-        commentsText.append(comment['snippet']['topLevelComment']['snippet']['textDisplay'])
-
-    # In[30]:
-
-    commentsText
-
-    # In[31]:
-
-    # Chargement du modèle pour faire des prédictions
-    export_model = tf.keras.Sequential([
-        vectorize_layer,
-        tf.keras.models.load_model('saved_model/my_model'),
-        layers.Activation('sigmoid')
-    ])
-
-    export_model.compile(loss=losses.SparseCategoricalCrossentropy(from_logits=True),
-                         optimizer='adam',
-                         metrics=['accuracy'])
-    export_model.predict(commentsText)
-
-    # In[35]:
-
-
-
-
-    sentimentsValue = {'joy': 0, 'sadness': 0, 'fear': 0, 'love': 0, 'anger': 0}
-    for sentiments in export_model.predict(commentsText):
-        sentimentsValue[getLabel(sentiments)] = sentimentsValue[getLabel(sentiments)] + 1
-
-    return  sentimentsValue
+def buildAnalysisResult(p_video_id, p_analysis_result, p_like_dislike_ratio):
+    result = {
+        '_id': str(uuid.uuid4()),
+        'title': 'no title for the moment (API in construction)',
+        'author': 'no author for the moment (API in construction)',
+        'url': 'https://www.youtube.com/watch?v=' + p_video_id,
+        'description' : 'no description for the moment (API in construction)',
+        'date': str(datetime.datetime.now()),
+        'analysis': {
+            'feelings': p_analysis_result,
+            'likes': p_like_dislike_ratio
+        }
+    }
+    return result
 
 if __name__ == "__main__":
     app.run(debug=True)
