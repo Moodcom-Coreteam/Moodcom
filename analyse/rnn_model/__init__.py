@@ -1,1 +1,0 @@
-from rnn_model.rnn import rnnModel
