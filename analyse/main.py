@@ -1,21 +1,12 @@
 from flask import Flask
 import os
-import re
-import string
+import sys
 import tensorflow as tf
-
-from tensorflow.keras import layers
-from tensorflow.keras import losses
-from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
+from rnn_model.rnn import rnnModel
 import googleapiclient.discovery
 import numpy as np
 app = Flask(__name__)
-def custom_standardization(input_data):
-  lowercase = tf.strings.lower(input_data)
-  stripped_html = tf.strings.regex_replace(lowercase, '<br />', ' ')
-  return tf.strings.regex_replace(stripped_html,
-                                  '[%s]' % re.escape(string.punctuation),
-                                  '')
+
 
 
 def getLabel(sentiments):
@@ -36,22 +27,6 @@ def index():
 
 @app.route('/analysis/')
 def analyse():
-    max_features = 10000
-    sequence_length = 250
-
-    vectorize_layer = TextVectorization(
-        standardize=custom_standardization,
-        max_tokens=max_features,
-        output_mode='int',
-        output_sequence_length=sequence_length)
-    # # Récupération des commentaires Youtube
-
-    # In[25]:
-
-
-
-    # In[26]:
-
     counter = 0
     nextPageToken = ""
     videoId = "EKkzbbLYPuI"
@@ -64,15 +39,11 @@ def analyse():
     youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=DEVELOPER_KEY)
     comments = np.array([])
 
-    # In[27]:
-
     request = youtube.commentThreads().list(
         part="id,replies,snippet",
         maxResults=100,
         videoId=videoId
     )
-
-    # In[28]:
 
     for i in range(100):
         if (len(nextPageToken) == 0):
@@ -106,33 +77,12 @@ def analyse():
     for comment in comments:
         commentsText.append(comment['snippet']['topLevelComment']['snippet']['textDisplay'])
 
-    # In[30]:
 
-    commentsText
-
-    # In[31]:
-
-    # Chargement du modèle pour faire des prédictions
-    export_model = tf.keras.Sequential([
-        vectorize_layer,
-        tf.keras.models.load_model('saved_model/my_model'),
-        layers.Activation('sigmoid')
-    ])
-
-    export_model.compile(loss=losses.SparseCategoricalCrossentropy(from_logits=True),
-                         optimizer='adam',
-                         metrics=['accuracy'])
-    export_model.predict(commentsText)
-
-    # In[35]:
-
-
-
-
+    exported_model = rnnModel()
+    exported_model.predict(commentsText)
     sentimentsValue = {'joy': 0, 'sadness': 0, 'fear': 0, 'love': 0, 'anger': 0}
-    for sentiments in export_model.predict(commentsText):
+    for sentiments in exported_model.predict(commentsText):
         sentimentsValue[getLabel(sentiments)] = sentimentsValue[getLabel(sentiments)] + 1
-
     return  sentimentsValue
 
 if __name__ == "__main__":
