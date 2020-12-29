@@ -28,18 +28,28 @@ def getVideoCommentsThreads(p_wanted_comments, p_video_id):
 
     nextPageToken = ""
     totalComments = 0
+    commentsLeft = p_wanted_comments
 
     for i in range(nbNedeedLoop):
+        if(commentsLeft == 0):
+            break
+        elif(commentsLeft < s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"]):
+            nbCommentsToGet = commentsLeft
+            commentsLeft = 0
+        else:
+            nbCommentsToGet = s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"]
+            commentsLeft = commentsLeft - s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"]
+    
         if (len(nextPageToken) == 0):
             request = youtube.commentThreads().list(
                 part="id,replies,snippet",
-                maxResults=s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"],
+                maxResults=nbCommentsToGet,
                 videoId=p_video_id
             )
         else:
             request = youtube.commentThreads().list(
                 part="id,replies,snippet",
-                maxResults=s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"],
+                maxResults=nbCommentsToGet,
                 videoId=p_video_id,
                 pageToken=nextPageToken
             )
@@ -59,20 +69,16 @@ def getVideoCommentsThreads(p_wanted_comments, p_video_id):
             totalComments = totalComments + (len(responseItem) / s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"])
             break
 
-    totalComments = int(totalComments * s_YOUTUBE_CONFIG["MAX_RESULT_PER_CALL"])
-    print("nb comments")
-    print(len(comments))
-    print("estimate nb comments")
-    print(totalComments)
+    if(len(comments) != p_wanted_comments):
+        print('WARNING: You get less comments that you expected (' + str(len(comments)) + '/' +  str(p_wanted_comments) + ') !')
+    else:
+        print('SUCCESS: You get all needed comments (' + str(p_wanted_comments) + '/' +  str(p_wanted_comments) + ') !')
 
     return comments
+
 
 def getVideoCommentsTxt(p_comment_threads):
     commentsTxt = []
     for comment_thread in p_comment_threads:
         commentsTxt.append(comment_thread['snippet']['topLevelComment']['snippet']['textDisplay'])
     return commentsTxt
-
-neededComments = getVideoCommentsThreads(121, "EWyM299OPu8")
-onlyCommentsTxt = getVideoCommentsTxt(neededComments)
-print(onlyCommentsTxt)
