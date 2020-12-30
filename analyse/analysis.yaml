@@ -1,5 +1,2 @@
 service: analysis
-# runtime: python38
-env: flex
-runtime_config:
-  python_version: 3
+runtime: python38
