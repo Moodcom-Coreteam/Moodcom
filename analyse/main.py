@@ -1,5 +1,6 @@
 import datetime
 from flask import Flask, request
+import logging
 from rnn_model.rnn import rnnModel
 import uuid
 from youtube_API.youtube import getVideoCommentsThreads, getVideoCommentsTxt
@@ -9,6 +10,14 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return  'Hello world from ANALYSIS part !'
+
+@app.errorhandler(500)
+def server_error(e):
+    logging.exception('An error occurred during a request.')
+    return """
+    An internal error occurred: <pre>{}</pre>
+    See logs for full stacktrace.
+    """.format(e), 500
 
 @app.route('/analysis/')
 def analyse():  
