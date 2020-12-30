@@ -1,8 +1,8 @@
 import datetime
-from flask import Flask,request
+from flask import Flask, request
 from rnn_model.rnn import rnnModel
 import uuid
-from youtube_API.youtube import *
+from youtube_API.youtube import getVideoCommentsThreads, getVideoCommentsTxt
 
 app = Flask(__name__)
 
@@ -11,7 +11,7 @@ def index():
     return  'Hello world from ANALYSIS part !'
 
 @app.route('/analysis/')
-def analyse():
+def analyse():  
     nbComments = request.args.get('nbComments')
     videoId = request.args.get('videoId')
 
