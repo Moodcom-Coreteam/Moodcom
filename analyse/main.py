@@ -19,7 +19,7 @@ def server_error(e):
     See logs for full stacktrace.
     """.format(e), 500
 
-@app.route('/analysis', methods=['GET'])
+@app.route('/analysis/analyse', methods=['GET'])
 def analyse():
     #Get request arguments
     print("Get request arguments")
