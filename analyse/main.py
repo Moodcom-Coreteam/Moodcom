@@ -19,24 +19,30 @@ def server_error(e):
     See logs for full stacktrace.
     """.format(e), 500
 
-@app.route('/analysis/')
-def analyse():  
+@app.route('/analysis', methods=['GET'])
+def analyse():
+    #Get request arguments
+    print("Get request arguments")
     nbComments = request.args.get('nbComments')
     videoId = request.args.get('videoId')
 
     #Get YouTube comments
+    print("Get YouTube comments")
     commentsThreads = getVideoCommentsThreads(int(nbComments), videoId)
     commentsTxt = getVideoCommentsTxt(commentsThreads)
 
     #Load the model
+    print("Get load RNN model")
     exported_model = rnnModel()
 
     #Doing prediction
+    print("Doing prediction")
     exported_model.predict(commentsTxt)
     sentimentsValue = {'joy': 0, 'sadness': 0, 'fear': 0, 'love': 0, 'anger': 0}
     for sentiments in exported_model.predict(commentsTxt):
         sentimentsValue[getLabel(sentiments)] = sentimentsValue[getLabel(sentiments)] + 1
 
+    print('Prediction DONE')
     return buildAnalysisResult(videoId, sentimentsValue, 0)
 
 def getLabel(sentiments):
