@@ -1,3 +1,3 @@
 service: analysis
-instance_class: F3
+env: flex
 runtime: python38
