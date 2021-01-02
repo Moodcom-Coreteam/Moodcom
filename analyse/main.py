@@ -7,7 +7,7 @@ from youtube_API.youtube import getVideoCommentsThreads, getVideoCommentsTxt
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/analysis/')
 def index():
     return  'Hello world from ANALYSIS part !'
 
@@ -19,7 +19,7 @@ def server_error(e):
     See logs for full stacktrace.
     """.format(e), 500
 
-@app.route('/analysis/analyse', methods=['GET'])
+@app.route('/test/', methods=['GET'])
 def analyse():
     #Get request arguments
     print("Get request arguments")
