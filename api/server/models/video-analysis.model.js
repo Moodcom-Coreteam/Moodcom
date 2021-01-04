@@ -1,12 +1,27 @@
 const mongoose = require('mongoose');
 //require('mongoose-type-url');
+const schemaAnalyse = mongoose.Schema({
+        anger: Number,
+        fear: Number,
+        joy: Number,
+        love: Number,
+        sadness: Number,
+        surprise: Number,
+        date: Date
+    },
+    { collection : 'videos_analyse' }
+)
 
-const schema = mongoose.Schema({
-    _id : Number,
-    idVideos : String,
-    url : String,   
-    analyses : Array,
+const schemaVideo = mongoose.Schema({
+    title : { type: String, required: true },
+    channel: { type: String, required: true },
+    url: { type: String, required: true },
+    idVideo: { type: String, required: true },
+    description: { type: String, required: true },
+    publishedAt: { type: Date, required: true },
+    analyses: [schemaAnalyse]
 },
 { collection : 'videos_analyse' })
 
-module.exports = mongoose.model('videoAnalysis', schema);
+module.exports = mongoose.model('videoAnalysis', schemaVideo);
+
