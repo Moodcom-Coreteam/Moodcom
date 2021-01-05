@@ -1,0 +1,30 @@
+<form [formGroup]="videoForm" (ngSubmit)="addVideo()">
+  <div class="url" fxFlex fxLayout="row" fxLayoutAlign="center center">
+    <mat-form-field appearance="outline">
+      <mat-hint *ngIf="error">{{ error }}</mat-hint>
+      <input matInput
+             type="url"
+             placeholder="URL"
+             id="urlVideo"
+             formControlName="urlVideo"
+             [matAutocomplete]="auto"
+             (keyup)="onListSearches($event)"
+      >
+      <mat-autocomplete #auto="matAutocomplete" class="autocomplete-url">
+        <ng-container>
+          <mat-option *ngFor="let search of filteredSearches" [value]="search.url" style="height: 75px">
+            <img class="example-option-img" [src]="search.thumbnail" width="75"
+                 style="vertical-align: middle; margin: 5px">
+            <span>{{search.title}}</span>
+          </mat-option>
+        </ng-container>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <button type="submit" mat-raised-button color="primary" [disabled]="videoForm.invalid">
+      <mat-icon>add_box</mat-icon>
+    </button>
+  </div>
+</form>
+
+

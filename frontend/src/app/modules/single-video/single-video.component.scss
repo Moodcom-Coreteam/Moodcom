@@ -1,0 +1,56 @@
+@import '~@angular/material/theming';
+
+
+.card-single-video {
+  width: 450px;
+  max-height: 130px;
+}
+
+
+.mat-card-image {
+  width: 50%;
+  margin: 2px 2px 2px -10px;
+}
+
+mat-card-actions {
+  width: 1%;
+  margin-top: -35%;
+}
+
+mat-card-content {
+  font-family: 'Montserrat', serif;
+  margin-top: 5%;
+}
+
+.clearButtonIcon {
+  border-radius: 15px;
+}
+
+.mat-icon-button {
+  left: -10px;
+}
+
+.videoTitle {
+  font-weight: bold;
+  font-size: 1.2em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  width: 100%;
+}
+
+.videoChannelTitle {
+  color: gainsboro;
+  margin-top: 15px;
+}
+
+.videoPublishedAt {
+  color: gainsboro;
+  margin-top: 10px;
+
+  .mat-icon {
+    font-size: 17px;
+    margin-top: 2px;
+  }
+}

@@ -1,0 +1,8 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+  <button *ngIf="videoSize > 0"
+          mat-raised-button
+          color="primary"
+          [ngClass]="{'buttonAnalyze': true}"
+          (click)="onAnalyzeVideos()"
+  >{{ text() }}</button>
+</div>
