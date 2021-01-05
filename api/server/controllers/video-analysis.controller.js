@@ -69,6 +69,16 @@ exports.findOneById = (req, res) => {
 exports.doAnalysis = (req,res) => {
     const listVideos = req.body.videos;
     //TODO Envoi vers l'analyse
+    //analyse de test
+    const analyse = new AnalysisModel({
+        anger: 0.12,
+        fear: 0.13,
+        joy: 0.29,
+        love: 0.25,
+        sadness: 0.25,
+        surprise: 0.25,
+        date: new Date()
+    });
 
     listVideos.forEach(function (video){
 
@@ -85,7 +95,7 @@ exports.doAnalysis = (req,res) => {
                     idVideo: video.idYoutube,
                     description: video.description,
                     publishedAt: video.publishedAt,
-                    analyses: [],
+                    analyses: [analyse],
                 });
 
                 statusOperationBDD = false;
@@ -105,29 +115,10 @@ exports.doAnalysis = (req,res) => {
                     })
 
                 }else{
-                    console.log(data);
                     const newVideo = data;
-                    console.log("update");
-                    // console.log(data);
-                    const analyse = new AnalysisModel({
-                        anger: 0.12,
-                        fear: 0.13,
-                        joy: 0.29,
-                        love: 0.25,
-                        sadness: 0.25,
-                        surprise: 0.25,
-                        date: new Date()
-                    });
-                    // console.log(analyse)
-                    // const filter = { _id: data._id,  };
-                    // const update = { $push: { analyses: analyse }};
-                    // // console.log(filter,update)
-                    // newVideo.updateOne(filter, update)
-                    //     .then(data => {
-                    //         console.log(data);
-                    // })
+
                     newVideo.analyses.push(analyse);
-                    console.log(newVideo);
+
                     newVideo.save(function (err) {
                         if (err) return handleError(err)
                         console.log('Success!');
