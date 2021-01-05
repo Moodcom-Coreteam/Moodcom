@@ -1,0 +1,13 @@
+<body class="mat-app-background">
+<app-header (lightModeSwitched)="switchMode($event)"></app-header>
+<div fxLayout="row" class="mat-app-background">
+  <div fxFlex></div>
+
+  <div fxFlex="80" >
+    <router-outlet></router-outlet>
+  </div>
+  <div fxFlex></div>
+</div>
+</body>
+
+

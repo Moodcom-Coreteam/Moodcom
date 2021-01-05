@@ -1,0 +1,12 @@
+<div fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutAlign="space-around center">
+  <div fxFlexFill fxLayoutGap="20px grid" fxLayout="row wrap">
+    <app-single-video fxFlex="33" fxLayoutAlign="space-around center" *ngFor="let video of videos; let index = index"
+                      [id]="index"
+                      [title]="video.title"
+                      [channelTitle]="video.channelTitle"
+                      [publishedAt]="video.publishedAt"
+                      [thumbnail]="video.thumbnail">
+    </app-single-video>
+  </div>
+</div>
+

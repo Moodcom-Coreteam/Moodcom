@@ -1,0 +1,15 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <a [routerLink]="'/'"><img class = "logo" src="assets/logo.png"></a>
+
+    <a mat-button [routerLink]="'/aboutUs'"> A propos de nous</a>
+
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <mat-icon class="icon-dark-mode">bedtime</mat-icon>
+      <mat-slide-toggle (change)="onDarkModeSwitched($event)" color="primary"></mat-slide-toggle>
+      <mat-icon class="icon-light-mode">wb_sunny</mat-icon>
+    </div>
+
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -1,0 +1,44 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+  <h1 class="mat-display-2"> Analyse des vidéos </h1>
+</div>
+
+<div class="widget" fxLayout="row" >
+<button mat-raised-button color="primary" fxFlex="25" (click)="onNewAnalyze(true)"> <mat-icon>add_circle_outline</mat-icon>       Ajouter des vidéos à l'analyse</button>
+<span fxFlex="60"></span>
+<button mat-raised-button color="primary" fxFlex="15" (click)="onNewAnalyze(false)"> <mat-icon>replay</mat-icon>      Nouvelle analyse</button>
+</div>
+
+<p></p>
+<mat-tab-group animationDuration="0ms">
+
+  <!-- Analyse comparative -->
+  <mat-tab label="Comparative">
+    <div class="widget" fxLayout="row" fxLayoutAlign="space-around center">
+      <app-stacked-column-chart [videos]="videos"></app-stacked-column-chart>
+      <app-spiderweb-chart [videos]="videos"></app-spiderweb-chart>
+    </div>
+  </mat-tab>
+
+  <!-- Analyse individuelle -->
+  <mat-tab label="Individuelle">
+    <div class="widget">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutAlign="space-around center">
+        <div  fxLayoutGap="20px grid" fxLayout="row wrap">
+          <app-spiderweb-chart *ngFor="let video of videos" [video]="video" fxFlex="33" fxLayoutAlign="space-around center"></app-spiderweb-chart>
+          <app-spiderweb-chart  fxFlex="33"  fxLayoutAlign="space-around center"></app-spiderweb-chart>
+          <app-spiderweb-chart fxFlex="33" fxLayoutAlign="space-around center"></app-spiderweb-chart>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Evolutive">
+      <div class="widget" fxLayout="row" >
+      <app-basic-line-chart [videos]="videos" fxFlex="60"></app-basic-line-chart>
+        <p fxFlex="40">Cette analyse évolutive n'est pertinente que pour .... Faire un texte</p>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
+
+
