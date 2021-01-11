@@ -27,18 +27,6 @@ exports.create = (req, res) => {
     );
 };
 
-/*const findDocuments = function(db, callback) {
-    // Get the documents collection
-    const collection = db.collection('documents');
-    // Find some documents
-    collection.find({}).toArray(function(err, docs) {
-      assert.equal(err, null);
-      console.log("Found the following records");
-      console.log(docs)
-      callback(docs);
-    });
-  }*/
-
 exports.findAll = (req, res) => {
     VideoAnalysisModel.find()
     .then(data => {
@@ -67,20 +55,26 @@ exports.findOneById = (req, res) => {
 }
 
 exports.doAnalysis = (req,res) => {
-    const listVideos = req.body.videos;
-    //TODO Envoi vers l'analyse
-    //analyse de test
-    const analyse = new AnalysisModel({
-        anger: 0.12,
-        fear: 0.13,
-        joy: 0.29,
-        love: 0.25,
-        sadness: 0.25,
-        surprise: 0.25,
-        date: new Date()
-    });
+    let listVideos = req.body.videos;
+
+    let backAnalyses = {};
 
     listVideos.forEach(function (video){
+
+        //TODO Envoi vers l'analyse
+        //analyse de test
+        const analyse = new AnalysisModel({
+            anger: 0.12,
+            fear: 0.13,
+            joy: 0.29,
+            love: 0.25,
+            sadness: 0.25,
+            surprise: 0.25,
+            like: 25,
+            date: new Date()
+        });
+
+        video.analyses = analyse;
 
         //Verification existance
         VideoAnalysisModel.findOne({
@@ -125,7 +119,7 @@ exports.doAnalysis = (req,res) => {
                     });
 
                 }
-                res.send(data);
+                res.send(listVideos);
             })
             .catch(err => {
                 res.status(500).send({
@@ -134,5 +128,3 @@ exports.doAnalysis = (req,res) => {
             });
     });
 }
-
-// -> getAnalysis
