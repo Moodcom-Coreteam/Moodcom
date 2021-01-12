@@ -55,7 +55,7 @@ exports.findOneById = (req, res) => {
 }
 
 exports.doAnalysis = (req,res) => {
-    let listVideos = req.body.videos;
+    let listVideos = req.body;
 
     listVideos.forEach(function (video){
 
