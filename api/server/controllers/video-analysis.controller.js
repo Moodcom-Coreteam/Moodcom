@@ -57,8 +57,6 @@ exports.findOneById = (req, res) => {
 exports.doAnalysis = (req,res) => {
     let listVideos = req.body.videos;
 
-    let backAnalyses = {};
-
     listVideos.forEach(function (video){
 
         //TODO Envoi vers l'analyse
@@ -81,6 +79,8 @@ exports.doAnalysis = (req,res) => {
             idVideo : video.idYoutube
         })
             .then(data => {
+                let [day, month, year] = video.publishedAt.split("/");
+                video.publishedAt = new Date(year, month-1, day,1,0,0,0); //va généner un date par rapport à GMT
 
                 const newVideo = new VideoAnalysisModel({
                     title: video.title,
@@ -94,17 +94,12 @@ exports.doAnalysis = (req,res) => {
 
                 statusOperationBDD = false;
                 if(data == null){
-                    console.log("Faire create");
-                    console.log("enregistrment nouvelle video");
-                    console.log(video);
 
                     newVideo.save()
-                    .then(data => {
-                        console.log('data'+ data);
+                    .then(() => {
                         statusOperationBDD = true;
                     })
-                    .catch(err => {
-                        console.log(err);
+                    .catch(() => {
                         statusOperationBDD = false;
                     })
 
@@ -115,7 +110,6 @@ exports.doAnalysis = (req,res) => {
 
                     newVideo.save(function (err) {
                         if (err) return handleError(err)
-                        console.log('Success!');
                     });
 
                 }

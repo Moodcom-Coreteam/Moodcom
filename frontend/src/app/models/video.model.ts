@@ -1,4 +1,4 @@
-import {Analyze} from "./analyze.model";
+import {Analyze} from './analyze.model';
 
 export class Video {
   title: string;
