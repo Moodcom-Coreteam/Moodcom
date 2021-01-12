@@ -57,8 +57,6 @@ exports.findOneById = (req, res) => {
 exports.doAnalysis = (req,res) => {
     let listVideos = req.body.videos;
 
-    let backAnalyses = {};
-
     listVideos.forEach(function (video){
 
         //TODO Envoi vers l'analyse
@@ -98,10 +96,10 @@ exports.doAnalysis = (req,res) => {
                 if(data == null){
 
                     newVideo.save()
-                    .then(data => {
+                    .then(() => {
                         statusOperationBDD = true;
                     })
-                    .catch(err => {
+                    .catch(() => {
                         statusOperationBDD = false;
                     })
 
