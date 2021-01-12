@@ -5,7 +5,7 @@ export class Video {
   idYoutube: string = null;
   thumbnail: string;
   channelTitle: string;
-  publishedAt: Date;
+  publishedAt: string;
   description: string;
   analyze: Analyze;
 
