@@ -9,5 +9,5 @@ module.exports = app => {
     routeur.post('/', videoAnalysisController.doAnalysis);
     
     //console.log("ROUTEUR : ", routeur);
-    app.use('/video', routeur);
+    app.use('/api/video', routeur);
 }
