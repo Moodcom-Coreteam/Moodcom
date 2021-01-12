@@ -1,11 +1,11 @@
-import {Analyze} from "./analyze.model";
+import {Analyze} from './analyze.model';
 
 export class Video {
   title: string;
   idYoutube: string = null;
   thumbnail: string;
   channelTitle: string;
-  publishedAt: string;
+  publishedAt: Date;
   description: string;
   analyze: Analyze;
 
