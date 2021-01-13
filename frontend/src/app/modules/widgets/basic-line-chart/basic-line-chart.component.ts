@@ -25,9 +25,9 @@ export class BasicLineChartComponent implements OnInit {
 
     const sortedVideos = this.videos.slice().sort(
       (a, b) => {
-        const dateB = b.publishedAt.split('/');
-        const dateA = a.publishedAt.split('/');
-        return new Date(dateA[1] + '/' + dateA[0] + '/' + dateA[2]).getTime() -  new Date(dateB[1] + '/' + dateB[0] + '/' + dateB[2]).getTime();
+        const [dayB, monthB, yearB] = b.publishedAt.split('/');
+        const [dayA, monthA, yearA] = a.publishedAt.split('/');
+        return new Date(monthA + '/' + dayA + '/' + yearA).getTime() -  new Date(monthB + '/' + dayB + '/' + yearB).getTime();
       }
     );
 

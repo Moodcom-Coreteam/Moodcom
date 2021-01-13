@@ -1,14 +1,29 @@
-<mat-toolbar>
+ <mat-toolbar>
   <mat-toolbar-row>
     <a [routerLink]="'/'"><img class = "logo" src="assets/logo.png"></a>
 
     <a mat-button [routerLink]="'/aboutUs'"> A propos de nous</a>
 
+    <div fxFlex fxLayout="row wrap" fxLayoutAlign="flex-end">
 
-    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+      <!-- Connexion Google -->
+      <div class="connexion">
+        <div *ngIf="user">
+        <button mat-button class="SignOut" (click)="signOut()">{{ text() }}</button>
+        </div>
+        <div *ngIf="!user">
+          <button mat-button class="SignOut" (click)="signInWithGoogle()">{{ text() }}</button>
+        </div>
+      </div>
+
+      <!-- Lien Youtube -->
+      <a href="https://www.youtube.com/" onclick="window.open(this.href); return false;"><img class = "youtube" src="../../../assets/youtube.png"></a>
+
+      <!-- Change Mode -->
       <mat-icon class="icon-dark-mode">bedtime</mat-icon>
-      <mat-slide-toggle (change)="onDarkModeSwitched($event)" color="primary"></mat-slide-toggle>
+      <mat-slide-toggle class="toogle" (change)="onDarkModeSwitched($event)" color="primary"></mat-slide-toggle>
       <mat-icon class="icon-light-mode">wb_sunny</mat-icon>
+
     </div>
 
   </mat-toolbar-row>

@@ -30,6 +30,10 @@ import {SpiderwebChartComponent} from "../../modules/widgets/spiderweb-chart/spi
 import {Globals} from "../../services/globals";
 import {MatTabsModule} from '@angular/material/tabs';
 import {BasicLineChartComponent} from "../../modules/widgets/basic-line-chart/basic-line-chart.component";
+import {FooterComponent} from '../../modules/footer/footer.component';
+import {GoogleLoginProvider, SocialAuthService, SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+
 
 @NgModule({
   declarations: [
@@ -37,6 +41,7 @@ import {BasicLineChartComponent} from "../../modules/widgets/basic-line-chart/ba
     HomePageComponent,
     AnalyzePageComponent,
     HeaderComponent,
+    FooterComponent,
     UrlComponent,
     DefaultComponent,
     SingleVideoComponent,
@@ -66,13 +71,29 @@ import {BasicLineChartComponent} from "../../modules/widgets/basic-line-chart/ba
         MatAutocompleteModule,
         MatListModule,
         HighchartsChartModule,
-        MatTabsModule
+        MatTabsModule,
+        SocialLoginModule,
+      MatProgressSpinnerModule
     ],
   providers: [
     DatePipe,
     VideosService,
-    Globals
-  ],
+    Globals,
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '228760608715-3r5n8rfjo6ss1g413fe1kosath1eludh.apps.googleusercontent.com'
+            )
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    }
+  ]
 })
 export class DefaultModule {
 }

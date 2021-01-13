@@ -1,5 +1,6 @@
 import {Component, HostBinding, OnInit} from '@angular/core';
 
+
 @Component({
   selector: 'app-default',
   templateUrl: './default.component.html',
@@ -12,6 +13,9 @@ export class DefaultComponent implements OnInit {
 
   isLightMode: boolean = false;
 
+  ngOnInit(): void {
+  }
+
   @HostBinding('class')
   get themeMode() {
     return this.isLightMode ? 'lightMode' : 'darkMode';
@@ -21,7 +25,7 @@ export class DefaultComponent implements OnInit {
     this.isLightMode = isLight;
   }
 
-  ngOnInit(): void {
+  ngOnDestroy() {
   }
 
 }

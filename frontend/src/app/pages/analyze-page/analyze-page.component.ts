@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import{Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {VideosService} from '../../services/videos.service';
 import {Video} from '../../models/video.model';
@@ -6,7 +6,6 @@ import {Subscription} from 'rxjs';
 import * as Highcharts from 'highcharts';
 import more from 'highcharts/highcharts-more';
 more(Highcharts);
-import HC_exporting from 'highcharts/modules/exporting';
 
 @Component({
   selector: 'app-analyze-page',
@@ -15,9 +14,7 @@ import HC_exporting from 'highcharts/modules/exporting';
 })
 export class AnalyzePageComponent implements OnInit, OnDestroy {
 
-
   videos: Video[] = [];
-
   private videosSubscription: Subscription;
 
   constructor(private router: Router,

@@ -15,12 +15,14 @@ export class StackedColumnChartComponent implements OnInit {
   Highcharts = Highcharts;
   chartOptions = {};
   @Input() videos: Video[];
+  isLightMode: boolean;
 
   constructor(private globals: Globals) { }
 
   ngOnInit(): void {
     const feelingsLabels = this.globals.feelingsLabels;
     const feelings = this.globals.feelings;
+
 
     function firstLetterToUppercase(string: string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
@@ -48,33 +50,34 @@ export class StackedColumnChartComponent implements OnInit {
       });
     });
 
-    this.chartOptions = {
-      chart: {
-        type: 'column'
-      },
-      title: {
-        text: 'Analyse des sentiments'
-      },
-      xAxis: {
-        categories
-      },
-      yAxis: {
-        min: 0,
+      this.chartOptions = {
+        chart: {
+          type: 'column',
+        },
         title: {
-          text: 'Pourcentage de chaque sentiment'
-        }
-      },
-      tooltip: {
-        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
-        shared: true
-      },
-      plotOptions: {
-        column: {
-          stacking: 'percent'
-        }
-      },
-      series
-    };
+          text: 'Analyse des sentiments',
+        },
+        xAxis: {
+          categories
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Pourcentage de chaque sentiment'
+          }
+        },
+        tooltip: {
+          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+          shared: true
+        },
+        plotOptions: {
+          column: {
+            stacking: 'percent'
+          }
+        },
+        series
+      };
+
     HC_exporting(Highcharts);
   }
 
