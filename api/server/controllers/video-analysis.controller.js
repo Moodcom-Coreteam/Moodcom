@@ -62,12 +62,12 @@ exports.doAnalysis = (req,res) => {
         //TODO Envoi vers l'analyse
         //analyse de test
         const analyse = new AnalysisModel({
-            anger: 0.12,
-            fear: 0.13,
-            joy: 0.29,
-            love: 0.25,
-            sadness: 0.25,
-            surprise: 0.25,
+            anger: Math.random(),
+            fear: Math.random(),
+            joy: Math.random(),
+            love: Math.random(),
+            sadness: Math.random(),
+            surprise: Math.random(),
             like: 25,
             date: new Date()
         });
