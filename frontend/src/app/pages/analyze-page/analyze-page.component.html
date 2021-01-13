@@ -13,8 +13,15 @@
 
   <!-- Analyse comparative -->
   <mat-tab label="Comparative">
-    <div class="widget" fxLayout="row" fxLayoutAlign="space-around center">
-      <app-stacked-column-chart [videos]="videos"></app-stacked-column-chart>
+    <div class="widget" fxLayout = "row wrap"
+         fxLayout.lt-sm = "column"
+         fxLayoutGap = "20px"
+         fxLayoutAlign = "flex-start" >
+      <app-stacked-column-chart [videos]="videos"
+                                fxFlex = "calc(50% - 20px)"
+                                fxFlex.lt-md = "calc (50% - 20px)"
+                                fxFlex.lt-sm = "100%">
+      </app-stacked-column-chart>
       <app-spiderweb-chart [videos]="videos"></app-spiderweb-chart>
     </div>
   </mat-tab>
@@ -22,20 +29,42 @@
   <!-- Analyse individuelle -->
   <mat-tab label="Individuelle">
     <div class="widget">
-      <div fxLayout="row wrap" fxLayoutGap="20px grid" fxLayoutAlign="space-around center">
-        <div  fxLayoutGap="20px grid" fxLayout="row wrap">
-          <app-spiderweb-chart *ngFor="let video of videos" [video]="video" fxFlex="33" fxLayoutAlign="space-around center"></app-spiderweb-chart>
-          <app-spiderweb-chart  fxFlex="33"  fxLayoutAlign="space-around center"></app-spiderweb-chart>
-          <app-spiderweb-chart fxFlex="33" fxLayoutAlign="space-around center"></app-spiderweb-chart>
+      <div
+        fxLayout = "row wrap"
+        fxLayout.lt-sm = "column"
+        fxLayoutGap = "20px"
+        fxLayoutAlign = "flex-start">
+        <div *ngFor="let video of videos; let index = index">
+          <app-spiderweb-chart  [video]="video"
+                               fxFlex = "400"
+                               fxFlex.lt-md = "calc (100% - 20px)"
+                               fxFlex.lt-sm = "100%">
+          </app-spiderweb-chart>
+          <mat-card class="mat-card-info" fxLayoutAlign="space-evenly center">
+            <mat-card-content>
+              <div class="videoNum"> Vidéo n°{{ index+1 }}</div>
+              <div> Titre : {{ video.title }} </div>
+              <div> Chaîne : {{ video.channelTitle }}</div>
+              <div>
+                <mat-icon>calendar_today</mat-icon>
+                {{ video.publishedAt }}
+              </div>
+            </mat-card-content>
+
+          </mat-card>
+        </div>
         </div>
       </div>
-    </div>
   </mat-tab>
 
+  <!-- Analyse évolutive -->
   <mat-tab label="Evolutive">
       <div class="widget" fxLayout="row" >
       <app-basic-line-chart [videos]="videos" fxFlex="60"></app-basic-line-chart>
-        <p fxFlex="40">Cette analyse évolutive n'est pertinente que pour .... Faire un texte</p>
+        <p fxFlex="40">Cette analyse évolutive n'est pertinente que pour des vidéos ayant le même sujet.
+          Par exemple : plusieurs trailers d'un même film.<br>
+        + Expliquer x et y
+        </p>
     </div>
   </mat-tab>
 </mat-tab-group>

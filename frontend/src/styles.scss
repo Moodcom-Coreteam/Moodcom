@@ -9,6 +9,42 @@ html, body {
 body {
   margin: 0;
 }
+
+//Palette de couleurs
+$md-palette1: (
+  50 : #f6e4e7,
+  100 : #eabcc4,
+  200 : #dc909d,
+  300 : #cd6475,
+  400 : #c34258,
+  500 : #b8213a,
+  600 : #b11d34,
+  700 : #a8182c,
+  800 : #a01425,
+  900 : #910b18,
+  A100 : #ffc0c4,
+  A200 : #ff8d95,
+  A400 : #ff5a66,
+  A700 : #ff414e,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #ffffff,
+  )
+);
+
+// Typographie
 $heading-font-family: 'Quicksand';
 $body-font-family: 'Montserrat';
 $custom-typography: mat-typography-config(
@@ -38,6 +74,7 @@ $custom-typography: mat-typography-config(
 @include mat-core($custom-typography);
 @include angular-material-typography($custom-typography);
 
+//Définition du thème Dark
 $dark-primary: mat-palette($md-palette1, 500);
 $dark-accent: mat-palette($mat-pink, A200, A100, A400);
 $dark-warn: mat-palette($mat-deep-orange);
@@ -48,8 +85,44 @@ $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
   @include angular-material-theme($dark-theme);
   @include mat-icon-button;
   @include about-us-subtitle;
+
+  //Style Highcharts
+  .highcharts-background {
+    fill: #3A3838;
+  }
+
+  .highcharts-container div {
+    font-family: 'Quicksand', Arial, Helvetica, sans-serif;
+  }
+
+  .highcharts-title tspan {
+    fill: #aeaeae;
+    font-size: 18px;
+  }
+
+  //Ne fonctionne pas
+  .highcharts-axis .highcharts-yaxis {
+    fill: #ffffff;
+  }
+  //Ne fonctionne pas
+  .highcharts-axis-labels .highcharts-xaxis-labels g text {
+    fill: #ffffff;
+  }
+  .highcharts-legend-item:hover text tspan {
+    fill: #787878;
+  }
+
+  .highcharts-legend-item > text tspan {
+    fill: white;
+  }
+
+  .highcharts-legend-item-hidden tspan {
+    fill: #787878;
+  }
+
 }
 
+//Définition du thème Light
 $light-primary: mat-palette($md-palette1, 500);
 $light-accent: mat-palette($mat-deep-purple, A200, A100, A400);
 $light-warn: mat-palette($mat-blue);
@@ -57,6 +130,8 @@ $light-warn: mat-palette($mat-blue);
 $mat-light-theme-background: (
   app-bar:    map_get($mat-grey, 300),
   background: map_get($mat-grey, 100),
+  card: #efefef,
+
 );
 
 $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
@@ -65,6 +140,18 @@ $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
   @include angular-material-theme($light-theme);
   @include mat-icon-button;
   @include about-us-subtitle;
+
+  //Style Highcharts
+  .highcharts-background {
+  fill: #efefef;
+  }
+
+  .highcharts-grid-line {
+    stroke : #aeaeae;
+  }
+
 }
+
+
 
 

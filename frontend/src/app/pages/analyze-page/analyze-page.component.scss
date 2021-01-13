@@ -10,3 +10,22 @@ button {
 .widget {
   margin-top: 32px;
 }
+
+app-stacked-column-chart, app-spiderweb-chart {
+  margin-top: 5px;
+}
+.mat-card-info {
+  background: transparent;
+  width: auto;
+  max-height: 150px;
+  margin-top: 32px;
+}
+
+.mat-card-info:not([class*=mat-elevation-z]) {
+  box-shadow: 6px 2px 1px -1px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0), 0px 1px 3px 0px rgba(0, 0, 0, 0);
+}
+
+.videoNum {
+  font-weight: bold;
+  font-size: 1.0em;
+}

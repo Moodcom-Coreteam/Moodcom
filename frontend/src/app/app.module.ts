@@ -10,7 +10,7 @@ import {DefaultModule} from './layout/default/default.module';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
     ],
     imports: [
         BrowserModule,
