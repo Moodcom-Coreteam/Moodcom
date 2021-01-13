@@ -7,7 +7,6 @@ module.exports = app => {
     routeur.get('/:id', videoAnalysisController.findOneById);
 
     routeur.post('/', videoAnalysisController.doAnalysis);
-    
-    //console.log("ROUTEUR : ", routeur);
+
     app.use('/api/video', routeur);
 }

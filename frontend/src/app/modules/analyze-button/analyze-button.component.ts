@@ -53,7 +53,7 @@ export class AnalyzeButtonComponent implements OnInit, OnDestroy {
 
     // Envoie des données au back
     this.isLoading = true;
-    this.httpClient.post<any[]>('http://localhost:8080/video', this.videosService.videos).subscribe(
+    this.httpClient.post<any[]>('http://localhost:8080/api/video', this.videosService.videos).subscribe(
       async data => {
         // récéption des données du back
         data.forEach( (video, index) => {
