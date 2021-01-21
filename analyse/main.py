@@ -32,8 +32,7 @@ def analyse():
     # Doing prediction
     print("Doing prediction")
     exported_model.predict(commentsTxt)
-    sentimentsValue = {'joy': 0, 'sadness': 0,
-                       'fear': 0, 'love': 0, 'anger': 0}
+    sentimentsValue = {'joy': 0, 'sadness': 0, 'love': 0, 'disappointment': 0, 'anger': 0, 'optimism': 0}
     for sentiments in exported_model.predict(commentsTxt):
         sentimentsValue[getLabel(sentiments)
                         ] = sentimentsValue[getLabel(sentiments)] + 1
@@ -52,7 +51,7 @@ def server_error(e):
 
 
 def getLabel(sentiments):
-    labels = ['anger', 'fear', 'joy', 'love', 'sadness']
+    labels = ['anger', 'disappointment', 'joy', 'love', 'optimism', 'sadness']
     index = 0
     maximum = 0
     cpt = 0

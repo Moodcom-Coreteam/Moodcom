@@ -79,5 +79,6 @@ def getVideoCommentsThreads(p_wanted_comments, p_video_id):
 def getVideoCommentsTxt(p_comment_threads):
     commentsTxt = []
     for comment_thread in p_comment_threads:
-        commentsTxt.append(comment_thread['snippet']['topLevelComment']['snippet']['textDisplay'])
+
+        commentsTxt.append(comment_thread['snippet']['topLevelComment']['snippet']['textDisplay'].encode('ascii', 'namereplace').decode())
     return commentsTxt

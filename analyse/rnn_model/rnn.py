@@ -10,28 +10,9 @@ def custom_standardization(input_data):
   return tf.strings.regex_replace(stripped_html, '[%s]' % re.escape(string.punctuation), '')
 
 def rnnModel():
-    max_features = 10000
-    sequence_length = 250
-    vectorize_layer = TextVectorization(
-        standardize=custom_standardization,
-        max_tokens=max_features,
-        output_mode='int',
-        output_sequence_length=sequence_length)
+    with tf.keras.utils.custom_object_scope({'custom_standardization': custom_standardization}):
+        export_model = tf.keras.models.load_model('rnn_model/my_model')
 
-    export_model = tf.keras.Sequential([
-        vectorize_layer,
-        tf.keras.models.load_model('rnn_model/my_model')
-    ])
-
-    export_model.compile(
-        loss=losses.CategoricalCrossentropy(
-            from_logits=False,
-            label_smoothing=0,
-            reduction="auto",
-            name="categorical_crossentropy"
-        ),
-        optimizer='adam',
-        metrics=['categorical_accuracy']
-    )
+    export_model.compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = ['accuracy'])
     
     return export_model
