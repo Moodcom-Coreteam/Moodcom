@@ -2,7 +2,3 @@ dispatch:
     # Send all trafic on /api to api service.
     - url: '*/api/*'
       service: backend
-    
-    # Send all trafic on /analyse to api service.
-    - url: '*/analysis/*'
-      service: analysis
