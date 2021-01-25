@@ -3,7 +3,7 @@ module.exports = app => {
 
     let routeur = require('express').Router();
 
-    // routeur.get('/',historyController.findAll)
+    routeur.get('/',historyController.findAll)
 
     routeur.get('/:idUser', historyController.findOneById);
 

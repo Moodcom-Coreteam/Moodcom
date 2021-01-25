@@ -40,7 +40,7 @@ app.get('/api/', (req, res) => {
 });
 
 require('./server/routes/video-analysis.routes')(app);
-require('./server/routes/history.routes')(app);
+// require('./server/routes/history.routes')(app);
 
 const connectUrl = config.db['prod'].mongo + config.db['prod'].auth;
 
