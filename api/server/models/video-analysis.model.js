@@ -1,17 +1,5 @@
 const mongoose = require('mongoose');
-//require('mongoose-type-url');
-const schemaAnalyse = mongoose.Schema({
-        anger: Number,
-        fear: Number,
-        joy: Number,
-        love: Number,
-        sadness: Number,
-        surprise: Number,
-        like: Number,
-        date: Date
-    },
-    { collection : 'videos_analyse' }
-)
+const AnalysisModel = require('../models/analysis.model');
 
 const schemaVideo = mongoose.Schema({
     title : { type: String, required: true },
@@ -20,7 +8,7 @@ const schemaVideo = mongoose.Schema({
     idVideo: { type: String, required: true },
     description: { type: String, required: true },
     publishedAt: { type: Date, required: true },
-    analyses: [schemaAnalyse]
+    analyses: [AnalysisModel.schema]
 },
 { collection : 'videos_analyse' })
 

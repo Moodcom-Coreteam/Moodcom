@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const VideoAnalysisModel = require('../models/video-analysis.model');
 const AnalysisModel = require('../models/analysis.model');
 
@@ -54,75 +56,101 @@ exports.findOneById = (req, res) => {
     })
 }
 
-exports.doAnalysis = (req,res) => {
-    let listVideos = req.body;
+exports.doAnalysis = (req,response) => {
+    //récupértation du tableau de videos
+    let listVideos = req.body.videos;
+    //récupération du paramètre user
+    let user = req.body.user;
 
-    listVideos.forEach(function (video){
+    //le compteur sera utilisé pour déterminer quand le serveur peut renvoyer l'analyse
+    let videoCount = listVideos.length;
 
-        //TODO Envoi vers l'analyse
-        //analyse de test
-        const analyse = new AnalysisModel({
-            anger: Math.random(),
-            fear: Math.random(),
-            joy: Math.random(),
-            love: Math.random(),
-            sadness: Math.random(),
-            surprise: Math.random(),
-            like: 25,
-            date: new Date()
-        });
+    listVideos.forEach(function (video) {
 
-        video.analyses = analyse;
+        //Construction de l'url pour l'analyse
+        let url = 'http://51.91.121.249:5000/analyse?nbComments=1000&videoId=' + video.idYoutube;
 
-        //Verification existance
-        VideoAnalysisModel.findOne({
-            idVideo : video.idYoutube
-        })
-            .then(data => {
+        //appel vers le service d'analyse
+        axios.get(url)
+            .then((res) => {
 
-                const newVideo = new VideoAnalysisModel({
-                    title: video.title,
-                    channel: video.channelTitle,
-                    url: video.url,
-                    idVideo: video.idYoutube,
-                    description: video.description,
-                    publishedAt: video.publishedAt,
-                    analyses: [analyse],
+                let feelings = res.data.analysis.feelings;
+                let likes = res.data.analysis.likes;
+
+                //ajout d'un élément analyse à un objet video
+                video.analyses = new AnalysisModel({
+                    anger: feelings.anger,
+                    fear: feelings.disappointment,
+                    joy: feelings.joy,
+                    love: feelings.love,
+                    sadness: feelings.sadness,
+                    surprise: feelings.optimism,
+                    like: likes,
+                    user: user,
+                    date: new Date()
                 });
 
-                statusOperationBDD = false;
-                if(data == null){
-                    console.log("Faire create");
-                    console.log("enregistrment nouvelle video");
-                    console.log(video);
+                //on retire 1 au compteur à chaque analyse terminée
+                videoCount--;
 
-                    newVideo.save()
-                    .then(data => {
-                        console.log('data'+ data);
-                        statusOperationBDD = true;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        statusOperationBDD = false;
-                    })
-
-                }else{
-                    const newVideo = data;
-
-                    newVideo.analyses.push(analyse);
-
-                    newVideo.save(function (err) {
-                        if (err) return handleError(err)
-                        console.log('Success!');
-                    });
-
+                //si l'utilisateur s'est authentifié sur le portail, on enregistre l'analyse pour l'historique
+                if (user != null) {
+                    //enregistrer l'analyse
+                    register(video);
                 }
-                res.send(listVideos);
+
+
+
             })
-            .catch(err => {
-                res.status(500).send({
-                    message : "Erreur lors de la récupération de la vidéo : " + err
-                })
+            .catch((error) => {
+                //on retire 1 au compteur à chaque analyse terminée
+                video.analyses = null;
+                videoCount--;
+            }).finally(() => {
+                //si toutes les vidéos ont été analysés on peut renvoyer la reponse au client
+                if(videoCount === 0){
+                    response.send(listVideos);
+                }
             });
+    });
+}
+
+function register(video){
+    //On vérifie si un enregistrement de la video existe ou non
+    //si oui, on fait seulement une mise à jour de l'objet en ajoutant l'analyse actuelle
+    //si non, on crée un objet video avec l'analyse actuelle
+    VideoAnalysisModel.findOne({
+        idVideo : video.idYoutube
+    })
+    .then(data => {
+
+        const newVideo = new VideoAnalysisModel({
+            title: video.title,
+            channel: video.channelTitle,
+            url: video.url,
+            idVideo: video.idYoutube,
+            description: video.description || "test",
+            publishedAt: video.publishedAt,
+            analyses: [video.analyses],
+        });
+
+        if(data == null){
+            //Création d'un nouvel objet video
+            newVideo.save()
+                .catch(err => {
+                    console.log(err);
+                })
+
+        }else{
+            //ajout d'un objet analyse à un objet video existant
+            const newVideo = data;
+
+            newVideo.analyses.push(video.analyses);
+
+            newVideo.save(function (err) {
+                if (err) return handleError(err)
+            });
+
+        }
     });
 }
