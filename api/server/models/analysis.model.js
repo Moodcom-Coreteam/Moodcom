@@ -8,6 +8,7 @@ const schemaAnalyse = mongoose.Schema({
         sadness: Number,
         surprise: Number,
         like: Number,
+        user: String,
         date: Date
     },
     { collection : 'videos_analyse' }
