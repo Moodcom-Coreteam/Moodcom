@@ -36,7 +36,8 @@ def analyse():
     for sentiments in exported_model.predict(commentsTxt):
         sentimentsValue[getLabel(sentiments)
                         ] = sentimentsValue[getLabel(sentiments)] + 1
-
+    for attr in sentimentsValue:
+        sentimentsValue[attr] = int(sentimentsValue[attr]) / int(nbComments)
     print('Prediction DONE')
     return buildAnalysisResult(videoId, sentimentsValue)
 
