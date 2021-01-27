@@ -83,7 +83,7 @@ def getVideoCommentsTxt(p_comment_threads):
         
     return commentsTxt
 
-def getVideoLikeDislikeAndComment(p_video_id):
+def getVideoStatistics(p_video_id):
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
     youtube = googleapiclient.discovery.build(
@@ -101,4 +101,4 @@ def getVideoLikeDislikeAndComment(p_video_id):
     response = request.execute()
 
     #return like and dislike count
-    return response['items'][0]['statistics']['likeCount'], response['items'][0]['statistics']['dislikeCount'],response['items'][0]['statistics']['commentCount']
+    return response['items'][0]['statistics']['likeCount'], response['items'][0]['statistics']['dislikeCount'],response['items'][0]['statistics']['commentCount'], response['items'][0]['statistics']['viewCount']
