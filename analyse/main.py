@@ -3,7 +3,7 @@ from flask import Flask, request
 import logging
 from rnn_model.rnn import rnnModel
 import uuid
-from youtube_API.youtube import getVideoCommentsThreads, getVideoCommentsTxt, getVideoLikeDislikeAndComment
+from youtube_API.youtube import getVideoCommentsThreads, getVideoCommentsTxt, getVideoStatistics
 
 app = Flask(__name__)
 
@@ -65,7 +65,7 @@ def getLabel(sentiments):
 
 
 def buildAnalysisResult(p_video_id, p_analysis_result):
-    like, dislike, commentCount = getVideoLikeDislikeAndComment(p_video_id)
+    like, dislike, commentCount, viewCount = getVideoStatistics(p_video_id)
     result = {
         '_id': str(uuid.uuid4()),
         'date': str(datetime.datetime.now()),
@@ -73,7 +73,8 @@ def buildAnalysisResult(p_video_id, p_analysis_result):
             'feelings': p_analysis_result,
             'like': like,
             'dislike': dislike,
-            'commentCount': commentCount
+            'commentCount': commentCount,
+            'viewCount': viewCount
         }
     }
     return result
