@@ -70,7 +70,7 @@ exports.findOneById = (req, res) => {
                             date: dateRetour,
                             videos: [historyAnalyse]
                         }
-                        historique.set(checkpointAnalyseCourant,historiqueObject);
+                        historique.set(checkpointAnalyseCourant,historicObject);
                     }
 
                 });
