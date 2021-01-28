@@ -4,7 +4,6 @@ const VideoAnalysisModel = require('../models/video-analysis.model');
 const AnalysisModel = require('../models/analysis.model');
 
 exports.create = (req, res) => {
-    console.log(req.body.videos[0].title)
     const video = new VideoAnalysisModel({
         title: req.body.videos[0].title,
         channel: req.body.videos[0].channelTitle,
@@ -43,10 +42,9 @@ exports.findAll = (req, res) => {
 
 exports.findOneById = (req, res) => {
     const id = req.params.id;
-    console.log("L'id est "+id);
+
     VideoAnalysisModel.findOne({_id : id})
     .then(data => {
-        console.log(data);
         res.send(data);
     })
     .catch(err => {
@@ -65,6 +63,8 @@ exports.doAnalysis = (req,response) => {
     //le compteur sera utilisé pour déterminer quand le serveur peut renvoyer l'analyse
     let videoCount = listVideos.length;
 
+    let checkpoint = Date.now();
+
     listVideos.forEach(function (video) {
 
         //Construction de l'url pour l'analyse
@@ -74,18 +74,26 @@ exports.doAnalysis = (req,response) => {
         axios.get(url)
             .then((res) => {
 
+                //Extraction des variables intéressantes
                 let feelings = res.data.analysis.feelings;
-                let likes = res.data.analysis.likes;
+                let likes = res.data.analysis.like;
+                let dislikes = res.data.analysis.dislike;
+                let commentCount = res.data.analysis.commentCount;
+                let viewCount = res.data.analysis.viewCount;
 
                 //ajout d'un élément analyse à un objet video
                 video.analyses = new AnalysisModel({
                     anger: feelings.anger,
-                    fear: feelings.disappointment,
+                    disappointment: feelings.disappointment,
                     joy: feelings.joy,
                     love: feelings.love,
                     sadness: feelings.sadness,
-                    surprise: feelings.optimism,
+                    optimism: feelings.optimism,
                     like: likes,
+                    dislike: dislikes,
+                    commentCount: commentCount,
+                    viewCount: viewCount,
+                    checkpoint: checkpoint,
                     user: user,
                     date: new Date()
                 });

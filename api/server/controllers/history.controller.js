@@ -2,7 +2,6 @@ const AnalysisModel = require('../models/analysis.model');
 const VideoAnalysisModel = require('../models/video-analysis.model');
 
 exports.findAll = (req, res) => {
-    console.log("all");
     AnalysisModel.find()
         .then(data => {
             res.send(data);
@@ -15,30 +14,70 @@ exports.findAll = (req, res) => {
 };
 
 exports.findOneById = (req, res) => {
-    console.log("one");
+    //Récupération de l'email de l'utilisateur
     const idUser = req.params.idUser;
-    console.log("L'id est "+idUser);
+
+    //Requete pour récupérer l'ensemble des analyses de l'utilisateur
     AnalysisModel.find({'analyses.user': idUser})
         .then(data => {
-            // console.log(data.length);
-            let historique = [];
 
+            //Utilisation d'une structure Map pour faciliter la création de l'objet qui contiendra les historiques
+            let historique = new Map;
+
+            //On parcourt chaque élément video extrait par la recherche
             data.forEach(function (videos){
+
+                //récupération des variables essentielles
                 let video = VideoAnalysisModel(videos);
 
                 let analyses = video.analyses;
 
-                // console.log(analyses)
-
+                //Pour chaque vidéo on va partir les analyses qui ont été trouvé
                 analyses.forEach(function (analyseOne){
+
                     let analyse = AnalysisModel(analyseOne);
-                    console.log(analyse.date.split('\d{4}-\d{2}-\d{2}T\d{2}:\d{2}'));
+
+                    //Extraction de la date pour la mettre en format français
+                    let date = new Date(analyse.date);
+                    let dateRetour = date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes();
+
+                    //récupération du checkpoint qui sert à déterminer si différentes vidéos font partis d'une même analyse
+                    let checkpointAnalyseCourant = analyse.checkpoint;
+
+                    //Construction de l'objet contenant la video et l'analyse à une date précise
+                    let historyAnalyse = {
+                        title: video.title,
+                        channel: video.channel,
+                        url: video.url,
+                        idVideo: video.idVideo,
+                        description: video.description,
+                        publishedAt: video.publishedAt,
+                        analyse
+                    }
+
+                    //Si il y a déjà un élément créé dans l'historique, on ajoute l'objet historyAnalyse au tableau d'analyse à une date
+                    if(historique.has(checkpointAnalyseCourant)){
+
+                        let historiqueExistantAnalysesObject = historique.get(checkpointAnalyseCourant);
+                        let videosArray = historiqueExistantAnalysesObject.videos;
+
+                        videosArray.push(historyAnalyse);
+
+
+                    }else{
+                        //Sinon on crée un nouvel élement dans la Map historique
+                        let historicObject = {
+                            date: dateRetour,
+                            videos: [historyAnalyse]
+                        }
+                        historique.set(checkpointAnalyseCourant,historiqueObject);
+                    }
 
                 });
             });
 
-
-            res.send(data);
+            //en renvoi les données en transformant la Map historique en Json
+            res.send(Object.fromEntries(historique));
         })
         .catch(err => {
             res.status(500).send({

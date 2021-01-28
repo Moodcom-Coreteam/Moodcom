@@ -2,13 +2,17 @@ const mongoose = require('mongoose');
 
 const schemaAnalyse = mongoose.Schema({
         anger: Number,
-        fear: Number,
+        disappointment: Number,
         joy: Number,
         love: Number,
         sadness: Number,
-        surprise: Number,
+        optimism: Number,
         like: Number,
+        dislike: Number,
+        commentCount: Number,
+        viewCount: Number,
         user: String,
+        checkpoint: String,
         date: Date
     },
     { collection : 'videos_analyse' }
