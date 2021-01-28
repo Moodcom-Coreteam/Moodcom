@@ -79,6 +79,26 @@ def getVideoCommentsThreads(p_wanted_comments, p_video_id):
 def getVideoCommentsTxt(p_comment_threads):
     commentsTxt = []
     for comment_thread in p_comment_threads:
-
         commentsTxt.append(comment_thread['snippet']['topLevelComment']['snippet']['textDisplay'].encode('ascii', 'namereplace').decode())
+        
     return commentsTxt
+
+def getVideoStatistics(p_video_id):
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
+    youtube = googleapiclient.discovery.build(
+        s_YOUTUBE_CONFIG['API_SERVICE_NAME'],
+        s_YOUTUBE_CONFIG['API_VERSION'],
+        developerKey=s_YOUTUBE_CONFIG['API_KEY']
+    )
+
+    #Get video statistic
+    request = youtube.videos().list(
+        part="statistics",
+        id=p_video_id
+    )
+
+    response = request.execute()
+
+    #return like and dislike count
+    return response['items'][0]['statistics']['likeCount'], response['items'][0]['statistics']['dislikeCount'],response['items'][0]['statistics']['commentCount'], response['items'][0]['statistics']['viewCount']
