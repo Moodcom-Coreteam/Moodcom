@@ -10,3 +10,15 @@ handlers:
 
 - url: /
   static_dir: dist
+
+- url: /styles.js
+  static_files: dist/MoodCom/styles.js
+  upload: dist/MoodCom/index.html
+
+
+
+
+# polyfills.js:1 Failed to load resource: the server responded with a status of 404 ()
+# runtime.js:1 Failed to load resource: the server responded with a status of 404 ()
+# main.js:1 Failed to load resource: the server responded with a status of 404 ()
+# vendor.js:1
