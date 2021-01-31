@@ -13,6 +13,8 @@ export class VideosService {
 
   videos: Video[] = [];
   videosSubject = new Subject<Video[]>();
+  alertVideoTitle: String[] = [];
+  alertVideosSubject = new Subject<String[]>();
 
   constructor(private httpClient: HttpClient,
               public datepipe: DatePipe) {
@@ -37,17 +39,21 @@ export class VideosService {
     const params = new HttpParams()
       .set('id', idYoutube)
       .set('key', 'AIzaSyAKXI0iS8OJco-eBu8krefnO2qVXD0qaFc')
-      .set('part', 'snippet');
+      .set('part', 'snippet, statistics');
     this.httpClient
       .get<any[]>('https://www.googleapis.com/youtube/v3/videos', {params})
       .subscribe(
         (response) => {
-          console.log(response);
           const snippet = response['items'][0]['snippet'];
+          const statistics = response['items'][0]['statistics'];
           newVideo.title = snippet['title'];
           newVideo.thumbnail = snippet['thumbnails']['medium']['url'];
-          newVideo.channelTitle = snippet["channelTitle"];
-          newVideo.publishedAt = this.datepipe.transform(Date.parse(snippet["publishedAt"]), 'dd/MM/yyyy');
+          newVideo.channelTitle = snippet['channelTitle'];
+          newVideo.description = snippet['description'];
+          newVideo.likes = statistics['likeCount'];
+          newVideo.dislikes = statistics['dislikeCount'];
+          newVideo.comments = statistics['commentCount'];
+          newVideo.publishedAt = this.datepipe.transform(Date.parse(snippet['publishedAt']), 'dd/MM/yyyy');
         });
   }
 
@@ -65,5 +71,14 @@ export class VideosService {
       }
     });
     return same;
+  }
+
+  emitAlertVideos() {
+    this.alertVideosSubject.next(this.alertVideoTitle);
+  }
+
+  clearAlertVideos() {
+    this.alertVideoTitle = [];
+    this.emitAlertVideos();
   }
 }

@@ -16,6 +16,7 @@ export class SpiderwebChartComponent implements OnInit {
   chartOptions = {};
   @Input() videos: Video[];
   @Input() video: Video;
+  @Input() withHistory: boolean;
 
   constructor(public globals: Globals) { }
 
@@ -25,31 +26,55 @@ export class SpiderwebChartComponent implements OnInit {
     const feelings = this.globals.feelings;
     const series = [];
 
-    function addVideoToSerie(video: Video) {
+    /**
+     * Méthode qui va ajouter les données de chaque vidéos au graphique
+     * @param video la vidéo
+     * @param hasManyVideos pour savoir si c'est l'analyse d'une seule ou de plusieurs vidéos
+     * @param withHistory le paramètre qui indique si l'utilisateur veut afficher l'historique de la dernière analyse
+     */
+    function addVideoToSerie(video: Video, hasManyVideos: boolean, withHistory: boolean) {
+      let index = 0;
+      if (hasManyVideos) {
+        index = withHistory ? 1 : 0;
+      }
       const name = video.title;
-      const data = [];
+      let data = [];
       feelings.forEach( feeling => {
-        data.push(video.getFeeling(feeling));
+        data.push(video.getFeeling(feeling, index));
       });
       series.push({name, data});
+      if (!hasManyVideos && withHistory) {
+        data = [];
+        feelings.forEach( feeling => {
+          data.push(video.getFeeling(feeling, 1));
+        });
+        series.push({name, data});
+      }
     }
 
+    let text;
     // create data for series
     if (this.videos){
       this.videos.forEach( video => {
-        addVideoToSerie(video);
+        addVideoToSerie(video, true , this.withHistory);
       });
+      text = this.withHistory ? 'Dernière analyse des sentiments' : 'Analyse des sentiments du jour';
     } else if (this.video){
-      addVideoToSerie(this.video);
+      addVideoToSerie(this.video, false, this.withHistory);
+      text = 'Analyse des sentiments de la vidéo';
     }
 
+    /**
+     * On remplit les options du graphique dynamiquement
+     */
     this.chartOptions = {
       chart: {
         polar: true,
         type: 'line',
       },
+      colors: this.globals.colorsCharts,
       title: {
-        text: 'Analyse des sentiments',
+        text,
         x: -80
       },
 

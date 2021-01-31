@@ -15,6 +15,7 @@ export class BasicLineChartComponent implements OnInit {
   chartOptions = {};
   @Input() videos: Video[];
   @Input() video: Video;
+  @Input() withHistory: boolean;
 
   constructor(public globals: Globals) { }
 
@@ -25,9 +26,9 @@ export class BasicLineChartComponent implements OnInit {
 
     const sortedVideos = this.videos.slice().sort(
       (a, b) => {
-        const [dayB, monthB, yearB] = b.publishedAt.split('/');
-        const [dayA, monthA, yearA] = a.publishedAt.split('/');
-        return new Date(monthA + '/' + dayA + '/' + yearA).getTime() -  new Date(monthB + '/' + dayB + '/' + yearB).getTime();
+        const dateB = b.publishedAt.split('/');
+        const dateA = a.publishedAt.split('/');
+        return new Date(dateA[1] + '/' + dateA[0] + '/' + dateA[2]).getTime() -  new Date(dateB[1] + '/' + dateB[0] + '/' + dateB[2]).getTime();
       }
     );
 
@@ -39,12 +40,15 @@ export class BasicLineChartComponent implements OnInit {
       window['data' + firstLetterToUppercase(feeling)] = [];
     });
 
+    const i = this.withHistory ? 1 : 0;
+
+
     // Create categories
     const categories = [];
     sortedVideos.forEach( video => {
       categories.push(video.publishedAt);
       feelings.forEach( feeling => {
-        window['data' + firstLetterToUppercase(feeling)].push(video.getFeeling(feeling) * 100);
+        window['data' + firstLetterToUppercase(feeling)].push(video.getFeeling(feeling, i) * 100);
       });
     });
 
@@ -57,10 +61,13 @@ export class BasicLineChartComponent implements OnInit {
       });
     });
 
-    this.chartOptions = {
+    const text = this.withHistory ? 'Dernière analyse en fonction de la sortie des vidéos':
+      'Analyse du jour en fonction de la sortie des vidéos';
 
+    this.chartOptions = {
+      colors: this.globals.colorsCharts,
       title: {
-        text: 'Analyse évolutive en fonction de la sortie des vidéos'
+        text
       },
 
       yAxis: {
