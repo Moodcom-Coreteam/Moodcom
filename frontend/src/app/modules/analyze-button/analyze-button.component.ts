@@ -9,6 +9,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {SocialAuthService, SocialUser} from 'angularx-social-login';
 import {SharedService} from '../../services/shared.service';
 import {History} from '../../models/history.model';
+import {Globals} from '../../services/globals';
 
 @Component({
   selector: 'app-analyze-button',
@@ -29,7 +30,8 @@ export class AnalyzeButtonComponent implements OnInit, OnDestroy {
               private router: Router,
               private httpClient: HttpClient,
               private analyzeService: SharedService,
-              private authService: SocialAuthService) {
+              private authService: SocialAuthService,
+              private global: Globals) {
   }
 
   ngOnInit(): void {
@@ -75,7 +77,8 @@ export class AnalyzeButtonComponent implements OnInit, OnDestroy {
     // récupération de l'utilisateur
     const userToken = this.user ? this.user.email : null;
     const body = {user: userToken, videos: this.videosService.videos};
-    const request = this.httpClient.post<any[]>('http://localhost:8080/api/video', body);
+    const url = this.global.getApiUrl();
+    const request = this.httpClient.post<any[]>(url + 'api/video', body);
 
     // Envoie des données au back
     this.isLoading = true;

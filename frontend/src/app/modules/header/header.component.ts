@@ -9,6 +9,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Sentiment} from '../../models/sentiment.model';
 import {Analyze} from '../../models/analyze.model';
 import {Subscription} from 'rxjs';
+import {Globals} from '../../services/globals';
 
 @Component({
   selector: 'app-header',
@@ -30,7 +31,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private authService: SocialAuthService,
               private videosService: VideosService,
               private analyzeService: SharedService,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              private global: Globals) {
   }
 
   ngOnDestroy(): void {
@@ -133,15 +135,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // récupération des données du back
 
     const userToken = this.user ? this.user.email : null;
-    const request = this.httpClient.get<any[]>('http://localhost:8080/api/history/' + userToken);
+    const url = this.global.getApiUrl();
+    const request = this.httpClient.get<any[]>(url + '/api/history/' + userToken);
 
     // Remplissage des historiques avec les données du back
     request.subscribe(data => {
       for (const history in data) {
         index ++;
-        console.log(index);
         if (index <= 5) {
-          console.log(index);
           const date = data[history]['date'];
           const videosFromBack = data[history]['videos'];
           const videos = [];
