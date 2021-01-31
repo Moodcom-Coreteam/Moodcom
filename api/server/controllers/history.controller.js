@@ -41,7 +41,12 @@ exports.findOneById = (req, res) => {
 
                         //Extraction de la date pour la mettre en format français
                         let date = new Date(analyse.date);
-                        let dateRetour = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
+                        let jour = (date.getDate().toString().length === 1) ? '0'+date.getDate() : date.getDate();
+                        let mois = ((date.getMonth()+1).toString().length === 1) ? '0'+(date.getMonth()+1) : (date.getMonth()+1);
+                        let heure = (date.getHours().toString().length === 1) ? '0'+date.getHours() : date.getHours();
+                        let minute = (date.getMinutes().toString().length === 1) ? '0'+date.getMinutes() : date.getMinutes();
+
+                        let dateRetour = jour + '/' + mois + '/' + date.getFullYear() + ' ' + heure + ':' + minute;
 
                         //récupération du checkpoint qui sert à déterminer si différentes vidéos font partis d'une même analyse
                         let checkpointAnalyseCourant = analyse.checkpoint;
@@ -79,8 +84,11 @@ exports.findOneById = (req, res) => {
                 });
             });
 
-            //en renvoi les données en transformant la Map historique en Json
-            res.send(Object.fromEntries(historique));
+            //Permet de renvoyer les 5 analyses les plus récentes
+            let historiqueSortByDate = new Map([...historique.entries()].reverse().slice(0,5));
+
+            //on renvoie les données en transformant la Map historique en Json
+            res.send(Object.fromEntries(historiqueSortByDate));
         })
         .catch(err => {
             res.status(500).send({
