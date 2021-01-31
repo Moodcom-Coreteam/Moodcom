@@ -131,6 +131,9 @@ function register(video){
         idVideo : video.idYoutube
     })
     .then(data => {
+        //Parsage de la date français -> anglais
+        let elementDate = video.publishedAt.split("/");
+        video.publishedAt = elementDate[2]+'-'+elementDate[1]+'-'+elementDate[0];
 
         const newVideo = new VideoAnalysisModel({
             title: video.title,
