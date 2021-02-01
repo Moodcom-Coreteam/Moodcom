@@ -20,6 +20,9 @@ export class SingleVideoComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Méthode qui supprime une vidéo
+   */
   onRemoveVideo() {
     this.videoService.removeVideo(this.id);
   }

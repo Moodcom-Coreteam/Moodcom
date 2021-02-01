@@ -22,6 +22,7 @@ export class AnalyzePageComponent implements OnInit, OnDestroy {
   alertVideoTitle: String[] = [];
   withHistory = false;
   showToggleHistory = this.sharedService.showToogleHistory;
+  dates: String[] = this.videosService.dates;
 
 
   constructor(private router: Router,

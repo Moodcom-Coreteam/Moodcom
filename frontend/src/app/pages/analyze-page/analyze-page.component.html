@@ -30,94 +30,97 @@
 </mat-slide-toggle>
 
 <p></p>
-<mat-tab-group animationDuration="0ms">
+<div *ngIf="videos.length > 0">
+  <mat-tab-group animationDuration="0ms">
 
-  <!-- Analyse comparative -->
-  <mat-tab label="Comparative">
-    <div class="widget" fxLayout="row wrap"
-         fxLayout.lt-sm="column"
-         fxLayoutGap="20px"
-         fxLayoutAlign="flex-start">
-      <app-spiderweb-chart fxFlex="calc (50% - 50px)" *ngIf="withHistory" [videos]="videos"></app-spiderweb-chart>
+    <!-- Analyse comparative -->
+    <mat-tab label="Comparative">
+      <div class="widget" fxLayout="row wrap"
+           fxLayout.lt-sm="column"
+           fxLayoutGap="20px"
+           fxLayoutAlign="flex-start">
+        <app-spiderweb-chart fxFlex="calc (50% - 50px)" *ngIf="withHistory" [videos]="videos" [date]="dates[0]"></app-spiderweb-chart>
 
-      <app-spiderweb-chart fxFlex="calc (50% - 50px)" [videos]="videos" [withHistory]="false"></app-spiderweb-chart>
-      <app-stacked-column-chart *ngIf="!withHistory" [videos]="videos" [withHistory]="false"
-                                fxFlex="calc (50% - 20px)"
-                                fxFlex.lt-md="calc (50% - 20px)"
-                                fxFlex.lt-sm="100%">
-      </app-stacked-column-chart>
-      <app-stacked-column-chart *ngIf="withHistory" [videos]="videos" [withHistory]="true"
-                                fxFlex="calc(50% - 20px)"
-                                fxFlex.lt-md="calc (50% - 20px)"
-                                fxFlex.lt-sm="100%">
-      </app-stacked-column-chart>
-    </div>
-  </mat-tab>
+        <app-spiderweb-chart fxFlex="calc (50% - 50px)" [videos]="videos" [withHistory]="false" [date]="dates[1]"></app-spiderweb-chart>
+        <app-stacked-column-chart *ngIf="!withHistory" [videos]="videos" [withHistory]="false"
+                                  fxFlex="calc (50% - 20px)"
+                                  fxFlex.lt-md="calc (50% - 20px)"
+                                  fxFlex.lt-sm="100%">
+        </app-stacked-column-chart>
+        <app-stacked-column-chart *ngIf="withHistory" [videos]="videos" [withHistory]="true"
+                                  fxFlex="calc(50% - 20px)"
+                                  fxFlex.lt-md="calc (50% - 20px)"
+                                  fxFlex.lt-sm="100%">
+        </app-stacked-column-chart>
+      </div>
+    </mat-tab>
 
-  <!-- Analyse individuelle -->
-  <mat-tab label="Individuelle">
-    <div class="widget">
-      <div
-        fxLayout="row wrap"
-        fxLayout.lt-sm="column"
-        fxLayoutGap="20px"
-        fxLayoutAlign="flex-start">
-        <div *ngFor="let video of videos; let index = index" class="paddingBottom">
-          <app-spiderweb-chart [video]="video" [withHistory]="withHistory"
-                               fxFlex="400"
-                               fxFlex.lt-md="calc (100% - 20px)"
-                               fxFlex.lt-sm="100%">
-          </app-spiderweb-chart>
-          <mat-card class="mat-card-info" fxLayoutAlign="space-evenly center">
-            <mat-card-content>
-              <div fxLayout="row" fxLayoutAlign="center center">
-                <h1 class="mat-display-3 about-us-subtitle videoNum"> Vidéo n° {{ index + 1 }} </h1>
-              </div>
-              <p> Titre : {{ video.title }} </p>
-              <p> Chaîne : {{ video.channelTitle }}</p>
-              <p class="maxLines"> Description : {{ video.description }} </p>
-              <p>
-                <mat-icon style="vertical-align: middle">calendar_today</mat-icon>
-                {{ video.publishedAt}}</p>
-              <div fxLayout="row">
-                <div fxFlexFill>
-                  <div fxFlex="33">
-                    <mat-icon style="color:#065FD4; ">thumb_up</mat-icon>
-                    <span class="statistics">{{ video.likes }}</span></div>
-                  <div fxFlex="33">
-                    <mat-icon style="color:#F60000; ">thumb_down</mat-icon>
-                    <span class="statistics"> {{ video.dislikes }}</span></div>
-                  <div fxFlex="33">
-                    <mat-icon style="color:grey; ">comment</mat-icon>
-                    <span class="statistics"> {{ video.comments }}</span></div>
+    <!-- Analyse individuelle -->
+    <mat-tab label="Individuelle">
+      <div class="widget">
+        <div
+          fxLayout="row wrap"
+          fxLayout.lt-sm="column"
+          fxLayoutGap="20px"
+          fxLayoutAlign="flex-start">
+          <div *ngFor="let video of videos; let index = index" class="paddingBottom">
+            <app-spiderweb-chart [video]="video" [withHistory]="withHistory"
+                                 fxFlex="400"
+                                 fxFlex.lt-md="calc (100% - 20px)"
+                                 fxFlex.lt-sm="100%">
+            </app-spiderweb-chart>
+            <mat-card class="mat-card-info" fxLayoutAlign="space-evenly center">
+              <mat-card-content>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                  <h1 class="mat-display-3 about-us-subtitle videoNum"> Vidéo n° {{ index + 1 }} </h1>
                 </div>
-              </div>
-            </mat-card-content>
+                <p> Titre : {{ video.title }} </p>
+                <p> Chaîne : {{ video.channelTitle }}</p>
+                <p class="maxLines"> Description : {{ video.description }} </p>
+                <p>
+                  <mat-icon style="vertical-align: middle">calendar_today</mat-icon>
+                  {{ video.publishedAt}}</p>
+                <div fxLayout="row">
+                  <div fxFlexFill>
+                    <div fxFlex="33">
+                      <mat-icon style="color:#065FD4; ">thumb_up</mat-icon>
+                      <span class="statistics">{{ video.likes }}</span></div>
+                    <div fxFlex="33">
+                      <mat-icon style="color:#F60000; ">thumb_down</mat-icon>
+                      <span class="statistics"> {{ video.dislikes }}</span></div>
+                    <div fxFlex="33">
+                      <mat-icon style="color:grey; ">comment</mat-icon>
+                      <span class="statistics"> {{ video.comments }}</span></div>
+                  </div>
+                </div>
+              </mat-card-content>
 
-          </mat-card>
+            </mat-card>
+          </div>
         </div>
       </div>
-    </div>
-  </mat-tab>
+    </mat-tab>
 
-  <!-- Analyse évolutive -->
-  <mat-tab label="Evolutive">
-    <div class="widget" fxLayout="row">
-      <app-basic-line-chart [videos]="videos" [withHistory]="false" fxFlex="50"></app-basic-line-chart>
-      <p fxFlex="50" class="text-justify mat-body">Cette analyse évolutive n'est pertinente que pour des vidéos portant
-        sur le
-        même sujet. <br>
-        Vous pouvez par exemple étudier une campagne de lancement, proposant des vidéos à différents moments de la
-        campagne. <br>
-        Ainsi, MoodCom vous propose d'analyser les sentiments des auditeurs en fonction de l'avancement de la campagne.
-      </p>
-    </div>
-    <div class="widget" fxLayout="row">
-      <app-basic-line-chart *ngIf="withHistory" [videos]="videos" [withHistory]="true"
-                            fxFlex="50"></app-basic-line-chart>
-    </div>
-  </mat-tab>
-</mat-tab-group>
-
+    <!-- Analyse évolutive -->
+    <mat-tab label="Evolutive">
+      <div class="widget" fxLayout="row">
+        <app-basic-line-chart [videos]="videos" [withHistory]="false" fxFlex="50"></app-basic-line-chart>
+        <p fxFlex="50" class="text-justify mat-body">Cette analyse évolutive n'est pertinente que pour des vidéos
+          portant
+          sur le
+          même sujet. <br>
+          Vous pouvez par exemple étudier une campagne de lancement, proposant des vidéos à différents moments de la
+          campagne. <br>
+          Ainsi, MoodCom vous propose d'analyser les sentiments des auditeurs en fonction de l'avancement de la
+          campagne.
+        </p>
+      </div>
+      <div class="widget" fxLayout="row">
+        <app-basic-line-chart *ngIf="withHistory" [videos]="videos" [withHistory]="true"
+                              fxFlex="50"></app-basic-line-chart>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
 
 

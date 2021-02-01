@@ -17,8 +17,10 @@ export class SpiderwebChartComponent implements OnInit {
   @Input() videos: Video[];
   @Input() video: Video;
   @Input() withHistory: boolean;
+  @Input() date: String;
 
-  constructor(public globals: Globals) { }
+  constructor(public globals: Globals) {
+  }
 
   ngOnInit(): void {
 
@@ -39,13 +41,13 @@ export class SpiderwebChartComponent implements OnInit {
       }
       const name = video.title;
       let data = [];
-      feelings.forEach( feeling => {
+      feelings.forEach(feeling => {
         data.push(video.getFeeling(feeling, index));
       });
       series.push({name, data});
       if (!hasManyVideos && withHistory) {
         data = [];
-        feelings.forEach( feeling => {
+        feelings.forEach(feeling => {
           data.push(video.getFeeling(feeling, 1));
         });
         series.push({name, data});
@@ -54,12 +56,13 @@ export class SpiderwebChartComponent implements OnInit {
 
     let text;
     // create data for series
-    if (this.videos){
-      this.videos.forEach( video => {
-        addVideoToSerie(video, true , this.withHistory);
+    if (this.videos) {
+      this.videos.forEach(video => {
+        addVideoToSerie(video, true, this.withHistory);
       });
-      text = this.withHistory ? 'Dernière analyse des sentiments' : 'Analyse des sentiments du jour';
-    } else if (this.video){
+      console.log(this.date);
+      text = this.withHistory ? 'Dernière analyse des sentiments ' + this.date : 'Analyse des sentiments du jour ';
+    } else if (this.video) {
       addVideoToSerie(this.video, false, this.withHistory);
       text = 'Analyse des sentiments de la vidéo';
     }
@@ -110,7 +113,6 @@ export class SpiderwebChartComponent implements OnInit {
     HC_exporting(Highcharts);
 
   }
-
 
 
 }

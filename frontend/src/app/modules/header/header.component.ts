@@ -36,8 +36,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-        this.historySubscription.unsubscribe();
-    }
+    this.historySubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.lightModeSwitched.emit(false);
@@ -64,7 +64,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
   signInWithGoogle(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    // this.ngOnInit();
     this.authSubscription = this.authService.authState.subscribe((user) => {
       this.user = user;
       if (this.user != null) {
@@ -77,7 +76,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * Méthode qui déconnecte l'utilisateur
    */
   signOut(): void {
-    // this.ngOnInit();
     this.authSubscription.unsubscribe();
     this.histories = [];
     this.analyzeService.clearHistory();
@@ -90,6 +88,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
   clearAlert() {
     this.videosService.clearAlertVideos();
+    this.analyzeService.showToogleHistory = false;
   }
 
 
@@ -120,7 +119,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.videosService.clearVideos();
     this.videosService.clearAlertVideos();
     history.videos.forEach(video => {
-      this.videosService.addNewVideo(video);
+      this.videosService.addNewVideoFromHistory(video, history.date);
     });
   }
 
@@ -141,7 +140,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Remplissage des historiques avec les données du back
     request.subscribe(data => {
       for (const history in data) {
-        index ++;
+        index++;
         if (index <= 5) {
           const date = data[history]['date'];
           const videosFromBack = data[history]['videos'];
@@ -166,7 +165,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
             video.comments = pathToSentiment['commentCount'];
             videos.push(video);
           }
-          //this.histories.push(new History(date, videos));
           this.analyzeService.addNewHistory(new History(date, videos));
         }
       }

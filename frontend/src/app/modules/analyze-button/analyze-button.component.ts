@@ -126,12 +126,8 @@ export class AnalyzeButtonComponent implements OnInit, OnDestroy {
     // on ajoute la nouvelle analyse à l'historique
     if (this.user != null) {
       const date = new Date();
-      const jour = date.getDate();
-      const mois = ('0' + (date.getMonth() + 1)).slice(-2);
-      const annee = date.getFullYear();
-      const heure = date.getHours();
-      const min = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-      const result = jour + '/' + mois + '/' + annee + ' ' + heure + ':' + min;
+
+      const result = this.videosService.dateMyFormat(date);
       this.analyzeService.addNewHistory(new History(result, this.videosService.videos));
     }
   }

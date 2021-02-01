@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {Observable, Subject} from "rxjs";
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
 import {History} from '../models/history.model';
 
 @Injectable({
@@ -7,7 +7,8 @@ import {History} from '../models/history.model';
 })
 export class SharedService {
 
-  constructor() { }
+  constructor() {
+  }
 
   private subjectReplayAnalyze = new Subject<any>();
   private subjectCompareAnalyze = new Subject<any>();
@@ -28,7 +29,7 @@ export class SharedService {
    * Méthode qui permet de réaliser une action à la souscription de celle-ci,
    * dès qu'une analyse doit être rejouée
    */
-  getReplayAnalyzeEvent(): Observable<any>{
+  getReplayAnalyzeEvent(): Observable<any> {
     return this.subjectReplayAnalyze.asObservable();
   }
 
@@ -43,7 +44,7 @@ export class SharedService {
    * Méthode qui permet de réaliser une action à la souscription de celle-ci,
    * dès qu'une analyse doit être comparée
    */
-  getCompareAnalyzeEvent(): Observable<any>{
+  getCompareAnalyzeEvent(): Observable<any> {
     return this.subjectCompareAnalyze.asObservable();
   }
 
@@ -58,7 +59,7 @@ export class SharedService {
    * Méthode qui permet de réaliser une action à la souscription de celle-ci,
    * dès qu'il faut afficher l'historique
    */
-  getWithHistoryEvent(): Observable<any>{
+  getWithHistoryEvent(): Observable<any> {
     return this.subjectWithHistory.asObservable();
   }
 
@@ -73,7 +74,7 @@ export class SharedService {
    * Méthode qui permet de réaliser une action à la souscription de celle-ci,
    * dès qu'il faut enelever l'historique
    */
-  getWithoutHistoryEvent(): Observable<any>{
+  getWithoutHistoryEvent(): Observable<any> {
     return this.subjectWithoutHistory.asObservable();
   }
 
@@ -89,7 +90,7 @@ export class SharedService {
    * @param newHistory nouvel historique
    */
   addNewHistory(newHistory: History) {
-    this.histories.push(newHistory);
+    this.histories.unshift(newHistory);
     this.emitHistory();
   }
 

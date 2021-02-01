@@ -36,7 +36,7 @@
   <div *ngFor="let history of histories; let index = index">
     <strong> Analyse du {{ history.date }} </strong>
 
-    <button mat-button matTooltip="Refaire l'analyse" matTooltipClass="matTooltip" (click)="replayAnalyze(history)">
+    <button mat-button matTooltip="Consulter l'analyse" matTooltipClass="matTooltip" (click)="replayAnalyze(history)">
       <mat-icon>replay</mat-icon>
     </button>
     <button mat-button class="action-compare" matTooltip="Refaire et comparer l'analyse" matTooltipClass="matTooltip"
