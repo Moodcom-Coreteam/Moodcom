@@ -85,7 +85,7 @@ exports.findOneById = (req, res) => {
             });
 
             //Permet de renvoyer les 5 analyses les plus récentes
-            let historiqueSortByDate = new Map([...historique.entries()].reverse().slice(0,5));
+            let historiqueSortByDate = new Map([...historique.entries()].sort().reverse().slice(0,5));
 
             //on renvoie les données en transformant la Map historique en Json
             res.send(Object.fromEntries(historiqueSortByDate));
