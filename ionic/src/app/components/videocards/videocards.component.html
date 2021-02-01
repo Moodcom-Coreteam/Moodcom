@@ -1,0 +1,19 @@
+
+<ion-card *ngFor="let vid of videos">
+  <ion-fab vertical="top" horizontal="end" >
+    <ion-icon name="close-circle" (click)=onRemoveVideo(vid.id)></ion-icon>
+  </ion-fab>
+
+  <ion-card-header>
+    <img src="{{vid.thumbnail}}"/>
+    <ion-card-subtitle>
+      {{ vid.channelTitle }}
+    </ion-card-subtitle>
+    <ion-card-title>
+      {{ vid.title }}
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    {{ vid.publishedAt }}
+  </ion-card-content>
+</ion-card>
