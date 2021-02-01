@@ -48,16 +48,17 @@ $md-palette1: (
 $heading-font-family: 'Quicksand';
 $body-font-family: 'Montserrat';
 $custom-typography: mat-typography-config(
-  $headline:      mat-typography-level(24px, $font-family: $heading-font-family),
-  $title:         mat-typography-level(30px, $font-family: $heading-font-family, $font-weight: 400),
-  $display-4:     mat-typography-level(112px, $font-family: $heading-font-family),
-  $display-3:     mat-typography-level(20px, $font-family: $heading-font-family),
-  $display-2:     mat-typography-level(45px, $font-family: $heading-font-family),
-  $display-1:     mat-typography-level(34px, $font-family: $heading-font-family),
-  $body-2:        mat-typography-level(14px, $font-family: $body-font-family, $font-weight: 500),
-  $body-1:        mat-typography-level(14px, $font-family: $body-font-family, $font-weight: 400),
-  $button:        mat-typography-level(14px, $font-family: $body-font-family, $font-weight: 500),
+  $headline: mat-typography-level(24px, $font-family: $heading-font-family),
+  $title: mat-typography-level(30px, $font-family: $heading-font-family, $font-weight: 400),
+  $display-4: mat-typography-level(112px, $font-family: $heading-font-family),
+  $display-3: mat-typography-level(20px, $font-family: $heading-font-family),
+  $display-2: mat-typography-level(45px, $font-family: $heading-font-family),
+  $display-1: mat-typography-level(34px, $font-family: $heading-font-family),
+  $body-2: mat-typography-level(14px, $font-family: $body-font-family, $font-weight: 500),
+  $body-1: mat-typography-level(14px, $font-family: $body-font-family, $font-weight: 400),
+  $button: mat-typography-level(14px, $font-family: $body-font-family, $font-weight: 500),
 );
+
 
 @mixin mat-icon-button {
   .mat-icon-button {
@@ -71,8 +72,45 @@ $custom-typography: mat-typography-config(
   }
 }
 
+@mixin mat-card-typography($custom-typography) {
+  .mat-card-title {
+    font-family: $heading-font-family;
+  }
+
+  .mat-card-content {
+    font-family: $body-font-family;
+  }
+}
+
+@mixin mat-autocomplete-typography($custom-typography) {
+}
+
+@mixin mat-tooltip-typography($custom-typography) {
+  .mat-tooltip {
+    font-family: $heading-font-family;
+  }
+}
+
+// Popover pour historique
+@mixin cdk-overlay() {
+  .cdk-overlay-pane {
+    background: #aeaeae;
+    font-family: $heading-font-family;
+    border-radius: 5px;
+    margin: 5px 5px 5px 5px;
+  }
+}
+
+// Marges du panneau historique
+.mde-popover-panel {
+  margin: 5px 5px 5px 5px;
+}
+
+
 @include mat-core($custom-typography);
 @include angular-material-typography($custom-typography);
+@include mat-option-typography($custom-typography);
+@include cdk-overlay;
 
 //Définition du thème Dark
 $dark-primary: mat-palette($md-palette1, 500);
@@ -86,15 +124,17 @@ $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
   @include mat-icon-button;
   @include about-us-subtitle;
 
+
   //Style Highcharts
   .highcharts-background {
     fill: #3A3838;
   }
 
-  .highcharts-container div {
+  .highcharts-root text {
     font-family: 'Quicksand', Arial, Helvetica, sans-serif;
   }
 
+  // Titre du graphe
   .highcharts-title tspan {
     fill: #aeaeae;
     font-size: 18px;
@@ -104,23 +144,38 @@ $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
   .highcharts-axis .highcharts-yaxis {
     fill: #ffffff;
   }
-  //Ne fonctionne pas
-  .highcharts-axis-labels .highcharts-xaxis-labels g text {
-    fill: #ffffff;
+
+  // Titre des variables en abcisses (nom des vidéos)
+  .highcharts-axis-labels tspan {
+    fill: #aeaeae;
   }
+
+  // Titre axe ordonnée
+  .highcharts-axis-title tspan {
+    fill: #aeaeae;
+  }
+
+  // Lors du clik sur une légende
   .highcharts-legend-item:hover text tspan {
     fill: #787878;
   }
 
+  // Légendes
   .highcharts-legend-item > text tspan {
     fill: white;
+    font-weight: lighter;
   }
 
   .highcharts-legend-item-hidden tspan {
     fill: #787878;
   }
 
+  a {
+    color: rgb(232, 232, 232);
+  }
+
 }
+
 
 //Définition du thème Light
 $light-primary: mat-palette($md-palette1, 500);
@@ -128,10 +183,9 @@ $light-accent: mat-palette($mat-deep-purple, A200, A100, A400);
 $light-warn: mat-palette($mat-blue);
 
 $mat-light-theme-background: (
-  app-bar:    map_get($mat-grey, 300),
+  app-bar: map_get($mat-grey, 300),
   background: map_get($mat-grey, 100),
   card: #efefef,
-
 );
 
 $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
@@ -143,13 +197,16 @@ $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
 
   //Style Highcharts
   .highcharts-background {
-  fill: #efefef;
+    fill: #efefef;
   }
 
   .highcharts-grid-line {
-    stroke : #aeaeae;
+    stroke: #aeaeae;
   }
 
+  a {
+    color : rgba(0, 0, 0, 0.87);
+  }
 }
 
 

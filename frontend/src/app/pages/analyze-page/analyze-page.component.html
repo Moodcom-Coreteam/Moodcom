@@ -2,27 +2,55 @@
   <h1 class="mat-display-2"> Analyse des vidéos </h1>
 </div>
 
-<div class="widget" fxLayout="row" >
-<button mat-raised-button color="primary" fxFlex="25" (click)="onNewAnalyze(true)"> <mat-icon>add_circle_outline</mat-icon>       Ajouter des vidéos à l'analyse</button>
-<span fxFlex="60"></span>
-<button mat-raised-button color="primary" fxFlex="15" (click)="onNewAnalyze(false)"> <mat-icon>replay</mat-icon>      Nouvelle analyse</button>
+<div class="widget" fxLayout="row">
+  <button mat-raised-button color="primary" fxFlex="25" (click)="onNewAnalyze(true)">
+    <mat-icon>add_circle_outline</mat-icon>
+    Ajouter des vidéos à l'analyse
+  </button>
+  <span fxFlex="60"></span>
+  <button mat-raised-button color="primary" fxFlex="15" (click)="onNewAnalyze(false)">
+    <mat-icon>replay</mat-icon>
+    Nouvelle analyse
+  </button>
 </div>
+
+<mat-card class="alert" *ngIf="alertVideoTitle.length > 0">
+  <mat-card-content>
+    Certaines vidéos n'ont pas été prise en compte dans l'analyse car elles ne contiennent aucun commentaire :
+    <ul>
+      <div *ngFor="let alert of alertVideoTitle">
+        <li>{{ alert }}</li>
+      </div>
+    </ul>
+  </mat-card-content>
+</mat-card>
+
+<mat-slide-toggle *ngIf="showToggleHistory" [checked]="withHistory" (change)="onChangeWithHistory($event)">
+  <p class="mat-body">Afficher la comparaison avec la dernière analyse </p>
+</mat-slide-toggle>
 
 <p></p>
 <mat-tab-group animationDuration="0ms">
 
   <!-- Analyse comparative -->
   <mat-tab label="Comparative">
-    <div class="widget" fxLayout = "row wrap"
-         fxLayout.lt-sm = "column"
-         fxLayoutGap = "20px"
-         fxLayoutAlign = "flex-start" >
-      <app-stacked-column-chart [videos]="videos"
-                                fxFlex = "calc(50% - 20px)"
-                                fxFlex.lt-md = "calc (50% - 20px)"
-                                fxFlex.lt-sm = "100%">
+    <div class="widget" fxLayout="row wrap"
+         fxLayout.lt-sm="column"
+         fxLayoutGap="20px"
+         fxLayoutAlign="flex-start">
+      <app-spiderweb-chart fxFlex="calc (50% - 50px)" *ngIf="withHistory" [videos]="videos"></app-spiderweb-chart>
+
+      <app-spiderweb-chart fxFlex="calc (50% - 50px)" [videos]="videos" [withHistory]="false"></app-spiderweb-chart>
+      <app-stacked-column-chart *ngIf="!withHistory" [videos]="videos" [withHistory]="false"
+                                fxFlex="calc (50% - 20px)"
+                                fxFlex.lt-md="calc (50% - 20px)"
+                                fxFlex.lt-sm="100%">
       </app-stacked-column-chart>
-      <app-spiderweb-chart [videos]="videos"></app-spiderweb-chart>
+      <app-stacked-column-chart *ngIf="withHistory" [videos]="videos" [withHistory]="true"
+                                fxFlex="calc(50% - 20px)"
+                                fxFlex.lt-md="calc (50% - 20px)"
+                                fxFlex.lt-sm="100%">
+      </app-stacked-column-chart>
     </div>
   </mat-tab>
 
@@ -30,41 +58,63 @@
   <mat-tab label="Individuelle">
     <div class="widget">
       <div
-        fxLayout = "row wrap"
-        fxLayout.lt-sm = "column"
-        fxLayoutGap = "20px"
-        fxLayoutAlign = "flex-start">
-        <div *ngFor="let video of videos; let index = index">
-          <app-spiderweb-chart  [video]="video"
-                               fxFlex = "400"
-                               fxFlex.lt-md = "calc (100% - 20px)"
-                               fxFlex.lt-sm = "100%">
+        fxLayout="row wrap"
+        fxLayout.lt-sm="column"
+        fxLayoutGap="20px"
+        fxLayoutAlign="flex-start">
+        <div *ngFor="let video of videos; let index = index" class="paddingBottom">
+          <app-spiderweb-chart [video]="video" [withHistory]="withHistory"
+                               fxFlex="400"
+                               fxFlex.lt-md="calc (100% - 20px)"
+                               fxFlex.lt-sm="100%">
           </app-spiderweb-chart>
           <mat-card class="mat-card-info" fxLayoutAlign="space-evenly center">
             <mat-card-content>
-              <div class="videoNum"> Vidéo n°{{ index+1 }}</div>
-              <div> Titre : {{ video.title }} </div>
-              <div> Chaîne : {{ video.channelTitle }}</div>
-              <div>
-                <mat-icon>calendar_today</mat-icon>
-                {{ video.publishedAt }}
+              <div fxLayout="row" fxLayoutAlign="center center">
+                <h1 class="mat-display-3 about-us-subtitle videoNum"> Vidéo n° {{ index + 1 }} </h1>
+              </div>
+              <p> Titre : {{ video.title }} </p>
+              <p> Chaîne : {{ video.channelTitle }}</p>
+              <p class="maxLines"> Description : {{ video.description }} </p>
+              <p>
+                <mat-icon style="vertical-align: middle">calendar_today</mat-icon>
+                {{ video.publishedAt}}</p>
+              <div fxLayout="row">
+                <div fxFlexFill>
+                  <div fxFlex="33">
+                    <mat-icon style="color:#065FD4; ">thumb_up</mat-icon>
+                    <span class="statistics">{{ video.likes }}</span></div>
+                  <div fxFlex="33">
+                    <mat-icon style="color:#F60000; ">thumb_down</mat-icon>
+                    <span class="statistics"> {{ video.dislikes }}</span></div>
+                  <div fxFlex="33">
+                    <mat-icon style="color:grey; ">comment</mat-icon>
+                    <span class="statistics"> {{ video.comments }}</span></div>
+                </div>
               </div>
             </mat-card-content>
 
           </mat-card>
         </div>
-        </div>
       </div>
+    </div>
   </mat-tab>
 
   <!-- Analyse évolutive -->
   <mat-tab label="Evolutive">
-      <div class="widget" fxLayout="row" >
-      <app-basic-line-chart [videos]="videos" fxFlex="60"></app-basic-line-chart>
-        <p fxFlex="40">Cette analyse évolutive n'est pertinente que pour des vidéos ayant le même sujet.
-          Par exemple : plusieurs trailers d'un même film.<br>
-        + Expliquer x et y
-        </p>
+    <div class="widget" fxLayout="row">
+      <app-basic-line-chart [videos]="videos" [withHistory]="false" fxFlex="50"></app-basic-line-chart>
+      <p fxFlex="50" class="text-justify mat-body">Cette analyse évolutive n'est pertinente que pour des vidéos portant
+        sur le
+        même sujet. <br>
+        Vous pouvez par exemple étudier une campagne de lancement, proposant des vidéos à différents moments de la
+        campagne. <br>
+        Ainsi, MoodCom vous propose d'analyser les sentiments des auditeurs en fonction de l'avancement de la campagne.
+      </p>
+    </div>
+    <div class="widget" fxLayout="row">
+      <app-basic-line-chart *ngIf="withHistory" [videos]="videos" [withHistory]="true"
+                            fxFlex="50"></app-basic-line-chart>
     </div>
   </mat-tab>
 </mat-tab-group>

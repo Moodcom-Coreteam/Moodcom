@@ -3,7 +3,7 @@
           mat-raised-button
           color="primary"
           [ngClass]="{'buttonAnalyze': true}"
-          (click)="onAnalyzeVideos()"
+          (click)="onAnalyzeVideos(false)"
   >{{ text() }}</button>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
 </div>

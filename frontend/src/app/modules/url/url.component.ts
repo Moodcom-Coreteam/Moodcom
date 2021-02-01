@@ -75,7 +75,7 @@ export class UrlComponent implements OnInit {
             }
 
             const video = new Video(this.videoService.videos.length,
-              "https://www.youtube.com/watch?v=" + item['id']['videoId']);
+              'https://www.youtube.com/watch?v=' + item['id']['videoId']);
             video.title = decodeEntities(item['snippet']['title']);
             video.thumbnail = item['snippet']['thumbnails']['default']['url'];
             tmp.push(video);

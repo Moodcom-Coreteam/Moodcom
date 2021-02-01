@@ -8,4 +8,5 @@ export class Analyze {
   getFeeling(sentiment: string) {
     return this.sentiment.getFeeling(sentiment);
   }
+
 }

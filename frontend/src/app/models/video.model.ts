@@ -7,7 +7,10 @@ export class Video {
   channelTitle: string;
   publishedAt: string;
   description: string;
-  analyze: Analyze;
+  analyzes: Analyze[] = [];
+  likes: number;
+  dislikes: number;
+  comments: number;
 
   constructor(public id: number, public url: string) {
     this.idYoutube = this.getIdYoutube();
@@ -26,7 +29,11 @@ export class Video {
     return this.idYoutube;
   }
 
-  getFeeling(sentiment: string) {
-    return this.analyze.getFeeling(sentiment);
+  getFeeling(sentiment: string, index: number) {
+    // Retourne le 1er feeling => Cas où y'a pas d'historique
+    if (this.analyzes.length > index ) {
+      return this.analyzes[index].getFeeling(sentiment);
+    }
+    return null;
   }
 }
