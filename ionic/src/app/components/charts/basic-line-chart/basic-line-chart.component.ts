@@ -1,8 +1,11 @@
+// Modules anular
 import { Component, Input, OnInit } from '@angular/core';
-import { Video } from '../../../models/video.model';
-import { Globals } from '../../../../services/globals';
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
+
+// Autres modules
+import { Video } from '../../../models/video.model';
+import { Globals } from '../../../../services/globals';
 
 @Component({
   selector: 'app-basic-line-chart',
@@ -45,7 +48,7 @@ export class BasicLineChartComponent implements OnInit {
     });
 
     
-    // Create categories
+    // Création des catégories
     const categories = [];
     sortedVideos.forEach( video => {
       categories.push(video.publishedAt);
@@ -65,7 +68,7 @@ export class BasicLineChartComponent implements OnInit {
       });
     });*/
 
-    // Create data for series
+    // Création des données pour les catégories
     const series = [];
     feelings.forEach((feeling, index) => {
       series.push({
@@ -74,6 +77,9 @@ export class BasicLineChartComponent implements OnInit {
       });
     });
 
+    /**
+     * Définition des options du chart
+     */
     this.chartOptions = {
       chart: {
         marginTop: 50

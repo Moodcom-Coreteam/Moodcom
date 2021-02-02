@@ -1,11 +1,12 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+// Modules angular
 import { Component, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from 'src/services/api-services.service';
+import {Subscription} from 'rxjs';
+
+// Services
 import { VideosService } from 'src/services/videos.service';
 
+// Autres
 import { Video } from '../../models/video.model';
-import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -39,6 +40,9 @@ export class HomePage {
 	  }
 
 
+	/**
+	 * Rajoute une card à la vue (old)
+	 */
 	addCard() {
 		console.log("salut : " + this.videoService.videos);
 		/*const url = this.input['nativeElement'].value;
@@ -51,6 +55,10 @@ export class HomePage {
 
 	}
 
+	/**
+	 * Enlève une carde de la vue
+	 * @param vidId : id de video
+	 */
 	removeCard(vidId) {
 		console.log("CLOSE");
 		let indexToRemove = null;

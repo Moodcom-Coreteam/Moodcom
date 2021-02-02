@@ -1,15 +1,4 @@
 
-<!--input 
-  matInput 
-  placeholder="Saisissez un URL..." 
-  #urlInput 
-  class="url-input" 
-  (keyup)="onListSearches($event)">
-<ion-button (click)="addCard()">
-  <ion-icon name="add-circle"></ion-icon>
-</ion-button-->
-
-
 <form [formGroup]="videoForm" (ngSubmit)="addVideo()">
   <div class="url" fxFlex fxLayout="row" fxLayoutAlign="center center">
     <mat-form-field appearance="outline">

@@ -1,8 +1,11 @@
+// Modules angular
 import { Component, Input, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import HC_exporting from 'highcharts/modules/exporting';
+
+// Autres
 import { Video } from 'src/app/models/video.model';
 import { Globals } from 'src/services/globals';
-import HC_exporting from 'highcharts/modules/exporting';
 
 
 @Component({
@@ -37,7 +40,7 @@ export class SpiderwebChartComponent implements OnInit {
 
     /**
      * Fonction de test
-     * @param video 
+     * @param video : video
      */
     /*function addVideoToSerie(video: Video) {
       const name = video.title;
@@ -48,7 +51,7 @@ export class SpiderwebChartComponent implements OnInit {
       series.push({name, data});
     }*/
 
-    // create data for series
+    // Création des données pour les catégories
     if (this.videos){
       this.videos.forEach( video => {
         addVideoToSerie(video);
@@ -57,6 +60,9 @@ export class SpiderwebChartComponent implements OnInit {
       addVideoToSerie(this.video);
     }
 
+    /**
+     * Définition des options du chart
+     */
     this.chartOptions = {
       chart: {
         polar: true,

@@ -1,5 +1,10 @@
+// Modules angular
 import { Component, Input, OnInit } from '@angular/core';
+
+// Services
 import { VideosService } from 'src/services/videos.service';
+
+// Autres
 import { Video } from '../../models/video.model';
 
 @Component({
@@ -13,6 +18,10 @@ export class Videocards implements OnInit {
 
   ngOnInit() {}
 
+  /**
+   * Enlève une vidéo de la liste
+   * @param id : id de vidéos
+   */
   onRemoveVideo(id) {
     this.videoService.removeVideo(id);
   }

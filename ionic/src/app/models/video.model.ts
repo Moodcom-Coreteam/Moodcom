@@ -1,5 +1,8 @@
 import {Analysis} from "./analysis.model";
 
+/**
+ * Définition du modèle de vidéo
+ */
 export class Video {
   title: string;
   idYoutube: string = null;
@@ -13,6 +16,9 @@ export class Video {
     this.idYoutube = this.getIdYoutube();
   }
 
+  /**
+   * Fonction de split de l'url pour trouver l'id de la vidéo
+   */
   getIdYoutube() {
     if (this.idYoutube == null) {
       const idYoutube = this.url.split('v=')[1];
@@ -26,6 +32,10 @@ export class Video {
     return this.idYoutube;
   }
 
+  /**
+   * Récupère un sentiment
+   * @param feelings : un sentiment
+   */
   getFeeling(feelings: string) {
     return this.analysis.getFeeling(feelings);
   }

@@ -1,11 +1,16 @@
+// Modules angular
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+
+// Services
+import { VideosService } from 'src/services/videos.service';
+
+// Autres
 import { Analysis } from 'src/app/models/analysis.model';
 import { Feelings } from 'src/app/models/feelings.model';
 import { Video } from 'src/app/models/video.model';
-import { VideosService } from 'src/services/videos.service';
 
 @Component({
   selector: 'app-analysis-button',
@@ -36,7 +41,10 @@ export class AnalysisButton implements OnInit, OnDestroy {
     console.log("BUTTON PUSHED");
     
   }
-
+  
+  /**
+   * Permet d'afficher le texte du bouton en fonction du nombre de vidéos
+   */
   text() {
     switch (this.videoSize) {
       case 1:
@@ -50,6 +58,10 @@ export class AnalysisButton implements OnInit, OnDestroy {
     this.videosSubscription.unsubscribe();
   }
 
+
+  /**
+   * Permet de lancer une nouvelle analyse et récupérer de la récupérer
+   */
   onAnalyzeVideos() {
     // Envoie des données au back
     function delay(ms: number) {
@@ -79,56 +91,5 @@ export class AnalysisButton implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     );
-    // récéption des données du back
-    // var dataDuBack = [
-    //   {
-    //     "analyse": {
-    //       "sentiment": {
-    //         "anger": 0.25,
-    //         "fear": 0.2,
-    //         "joy": 0.1,
-    //         "love": 0.05,
-    //         "sadness": 0.3,
-    //         "surprise": 0.1
-    //       }
-    //     }
-    //   }
-    // /*  ,
-    //   {
-    //     "analyse": {
-    //       "sentiment": {
-    //         "anger": 0.1,
-    //         "fear": 0.1,
-    //         "joy": 0.45,
-    //         "love": 0.1,
-    //         "sadness": 0.05,
-    //         "surprise": 0.2
-    //       }
-    //     }
-    //   },
-    //   {
-    //     "analyse": {
-    //       "sentiment": {
-    //         "anger": 0.25,
-    //         "fear": 0.25,
-    //         "joy": 0.3,
-    //         "love": 0.05,
-    //         "sadness": 0.05,
-    //         "surprise": 0.15
-    //       }
-    //     }
-    //   }*/
-    // ];
-    // dataDuBack.forEach( (video, index) => {
-    //   const pathToSentiment = video['analyse']['sentiment'];
-    //   const sentiment = new Sentiment(pathToSentiment['anger'],
-    //                                 pathToSentiment['fear'],
-    //                                 pathToSentiment['joy'],
-    //                                 pathToSentiment['love'],
-    //                                 pathToSentiment['sadness'],
-    //                                 pathToSentiment['surprise']);
-    //   this.videosService.videos[index]['analyze'] = new Analyze(sentiment);
-    // });
-    // this.router.navigate(['/analyze']);
   }
 }
