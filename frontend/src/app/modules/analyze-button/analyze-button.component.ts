@@ -22,6 +22,8 @@ export class AnalyzeButtonComponent implements OnInit, OnDestroy {
   videosSubscription: Subscription;
   isLoading = false;
   clickEventsubscription: Subscription;
+  compareAnalyseSubscription: Subscription;
+  replayAnalyseSubscription: Subscription;
   user: SocialUser;
   alertVideoTitle: string[];
   indexAlert: number[] = [];
@@ -41,11 +43,11 @@ export class AnalyzeButtonComponent implements OnInit, OnDestroy {
       }
     );
     this.videosService.emitVideos();
-    this.analyzeService.getReplayAnalyzeEvent().subscribe(() => {
+    this.replayAnalyseSubscription = this.analyzeService.getReplayAnalyzeEvent().subscribe(() => {
       // on relance pas d'analyse et on la rejoue
       this.router.navigate(['/analyze']);
     });
-    this.analyzeService.getCompareAnalyzeEvent().subscribe(() => {
+     this.compareAnalyseSubscription = this.analyzeService.getCompareAnalyzeEvent().subscribe(() => {
       // on relance une nouvelle analyse
       this.onAnalyzeVideos(true);
     });
@@ -68,6 +70,12 @@ export class AnalyzeButtonComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.videosSubscription.unsubscribe();
+    if (this.compareAnalyseSubscription) {
+      this.compareAnalyseSubscription.unsubscribe();
+    }
+    if (this.replayAnalyseSubscription) {
+      this.replayAnalyseSubscription.unsubscribe();
+    }
   }
 
   /**
@@ -128,7 +136,7 @@ export class AnalyzeButtonComponent implements OnInit, OnDestroy {
       const date = new Date();
 
       const result = this.videosService.dateMyFormat(date);
-      this.analyzeService.addNewHistory(new History(result, this.videosService.videos));
+      this.analyzeService.addNewHistory(new History(result, this.videosService.videos), false);
     }
   }
 }

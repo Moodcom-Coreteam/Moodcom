@@ -9,7 +9,11 @@ export class Globals {
   colorsCharts = ["#FFA14A", "#7CB5EC", "#90ed7d", "#be47b7", "#fde47f", "#f54f4d"] ;
 
   getApiUrl() {
-    return globalThis.api.url;
+    if (globalThis.api !== undefined) {
+      return globalThis.api.url;
+    } else {
+      return 'https://moodcom-development.ew.r.appspot.com/';
+    }
   }
 
 }

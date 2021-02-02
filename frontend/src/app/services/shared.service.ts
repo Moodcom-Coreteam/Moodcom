@@ -89,8 +89,12 @@ export class SharedService {
    * Ajoute une nouvelle analyse à l'historique
    * @param newHistory nouvel historique
    */
-  addNewHistory(newHistory: History) {
-    this.histories.unshift(newHistory);
+  addNewHistory(newHistory: History, atTheEnd: boolean) {
+    if (atTheEnd) {
+      this.histories.push(newHistory);
+    } else {
+      this.histories.unshift(newHistory);
+    }
     this.emitHistory();
   }
 

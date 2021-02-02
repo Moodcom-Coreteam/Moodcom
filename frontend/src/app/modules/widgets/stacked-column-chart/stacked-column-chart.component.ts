@@ -24,15 +24,6 @@ export class StackedColumnChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.sharedService.getWithHistoryEvent().subscribe(() => {
-    //   // on affiche l'historique
-    //   this.getChartOptionsWithHistory(true);
-    // });
-    // this.sharedService.getWithoutHistoryEvent().subscribe(() => {
-    //   // on affiche pas l'historique
-    //   this.getChartOptionsWithHistory(false);
-    // });
-    // this.getChartOptionsWithHistory(false);
     this.getChartOptionsWithHistory(this.withHistory);
   }
 

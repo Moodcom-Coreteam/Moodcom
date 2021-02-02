@@ -7,6 +7,10 @@ export class Sentiment {
               private sadness: number,
               private optimism: number) {}
 
+  /**
+   * Permet de récupérer les données d'un sentiment
+   * @param sentiment le sentiment
+   */
   getFeeling(sentiment: string) {
     return this[sentiment];
   }

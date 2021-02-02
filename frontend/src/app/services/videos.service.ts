@@ -113,6 +113,10 @@ export class VideosService {
     this.emitVideos();
   }
 
+  /**
+   * Permet de vérifier si une vidéo est présente dans la liste
+   * @param video la vidéo à vérifier
+   */
   issetVideo(video: Video) {
     const idYoutube = video.getIdYoutube();
     let same = false;
