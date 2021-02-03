@@ -1,0 +1,52 @@
+mat-form-field {
+    width: 50%;
+    margin: 50px 0 50px 0;
+  }
+  
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
+  
+  .mat-form-field-infix {
+    border: none;
+  }
+  
+  input {
+    color: black;
+    padding-top: -10px;
+  }
+  
+  .mat-input-element::placeholder {
+    color: grey;
+  }
+  
+  .mat-icon {
+    position: relative;
+    margin-top: -10%;
+  }
+  
+  .mat-raised-button {
+    margin-top: -20px;
+    height: 32%;
+  }
+  
+  button {
+    margin-left: 10px;
+  }
+  
+  ::ng-deep .mat-autocomplete-panel {
+    background-color: white;
+    border-radius: 5px;
+  }
+  
+  ::ng-deep .autocomplete-url {
+    max-height: 375px !important;
+  }
+  
+  
+  
+  
+  
+  
+  

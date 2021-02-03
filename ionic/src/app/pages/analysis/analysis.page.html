@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Analyses</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="height: 100%">
+    <ion-row justify-content-center align-items-center style="flex-direction: column">
+
+      <ion-button color="primary" fxFlex="25" (click)="onNewAnalyze(true)">
+        <ion-icon name="add-circle-outline"></ion-icon>
+        Ajouter des vidéos à l'analyse
+      </ion-button>
+      <span fxFlex="60"></span>
+
+      <ion-button color="primary" fxFlex="15" (click)="onNewAnalyze(false)">
+        <ion-icon name="repeat-outline"></ion-icon>
+        Nouvelle analyse
+      </ion-button>
+
+    </ion-row>
+    <ion-card>
+      <ion-card-content>
+        <app-basic-line-chart [videos]="videos" fxFlex="60"></app-basic-line-chart>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-content>
+        <div *ngFor="let video of videos; let index = index">
+          <app-spiderweb-chart [video]="video" fxFlex="60"></app-spiderweb-chart>
+          <div class="videoNum"> Vidéo n°{{ index+1 }}</div>
+          <div> Titre : {{ video.title }} </div>
+          <div> Chaîne : {{ video.channelTitle }}</div>
+          <div>
+            <ion-icon name="calendar-outline"></ion-icon>
+            {{ video.publishedAt }}
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-content>
+        <app-stacked-column-chart [videos]="videos" fxFlex="60"></app-stacked-column-chart>
+        <p>Cette analyse évolutive n'est pertinente que pour des vidéos ayant le même sujet.
+          Par exemple : plusieurs trailers d'un même film.<br>
+          + Expliquer x et y</p>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-grid>
+</ion-content>

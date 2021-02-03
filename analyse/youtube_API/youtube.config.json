@@ -1,0 +1,6 @@
+{
+    "API_SERVICE_NAME": "youtube",
+    "API_VERSION": "v3",
+    "API_KEY": "AIzaSyBAA9qtlKPWmy6UTPuyKIAVm5W9wbOkx4s",
+    "MAX_RESULT_PER_CALL": 100
+}

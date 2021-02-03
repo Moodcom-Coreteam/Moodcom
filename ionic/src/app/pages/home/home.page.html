@@ -1,0 +1,43 @@
+<body>
+  <ion-app>
+
+    <!-- Contenu page -->
+    <div class="ion-page" id="main-content">
+      <ion-header [translucent]="true">
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+
+          <ion-title>
+            MoodCom
+          </ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content [fullscreen]="true">
+        <ion-grid style="height: 100%">
+          <ion-row justify-content-center align-items-center style="flex-direction: column">
+
+            <app-searchbar [addCardFunction]="addCard"></app-searchbar>
+
+            <div *ngIf="videos.length != 0; else elseBlock" style="text-align: center; width: fit-content;min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+              <app-videocards [videos]="videos"></app-videocards>
+            </div>
+            <ng-template #elseBlock>
+              <p style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+                <ion-label class="welcome">
+                  Bienvenue sur l'application Moodcom !
+                </ion-label>
+              </p>
+            </ng-template>
+          </ion-row>
+        </ion-grid>
+            <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+              <app-analysis-button></app-analysis-button>
+            </ion-fab>
+
+      </ion-content>
+    </div>
+  </ion-app>
+</body>

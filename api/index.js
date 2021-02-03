@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+
+let config = require('./config/bd.config')
 
 const app = express();
 
@@ -36,5 +39,11 @@ app.get('/api/', (req, res) => {
     res.send("It works well with routing !");
 });
 
+require('./server/routes/video-analysis.routes')(app);
+require('./server/routes/history.routes')(app);
+
+const connectUrl = config.db['prod'].mongo + config.db['prod'].auth;
+
+mongoose.connect(connectUrl);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log("Listenning on port " + PORT));

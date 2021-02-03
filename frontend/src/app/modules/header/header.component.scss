@@ -1,0 +1,44 @@
+ul li {
+  list-style: none;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.logo {
+  height: 90px;
+  width: auto;
+}
+
+.youtube {
+  height: 35px;
+  margin-right: 15px;
+  vertical-align: middle;
+}
+
+.icon-dark-mode {
+  font-size: 0.6em;
+  margin: 7px 0 0 0;
+}
+
+.icon-light-mode {
+  font-size: 0.6em;
+  margin: 7px 0 0 10px;
+
+}
+
+.toogle {
+  margin: 4px 0 0 0;
+}
+
+.profilePicture {
+  border-radius: 34px;
+  width: 30px;
+  margin-left: 20px;
+  vertical-align: middle;
+}
+
+.matTooltip {
+  background: none;
+}
