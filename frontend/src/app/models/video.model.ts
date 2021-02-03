@@ -16,6 +16,9 @@ export class Video {
     this.idYoutube = this.getIdYoutube();
   }
 
+  /**
+   * Permet de récupérer l'id d'une vidéo Youtube à partir de son URL
+   */
   getIdYoutube() {
     if (this.idYoutube == null) {
       const idYoutube = this.url.split('v=')[1];
@@ -29,8 +32,12 @@ export class Video {
     return this.idYoutube;
   }
 
+  /**
+   * Récupère la valeur d'un sentiment d'une analyse donnée
+   * @param sentiment le sentiment
+   * @param index la position de l'analyse
+   */
   getFeeling(sentiment: string, index: number) {
-    // Retourne le 1er feeling => Cas où y'a pas d'historique
     if (this.analyzes.length > index ) {
       return this.analyzes[index].getFeeling(sentiment);
     }

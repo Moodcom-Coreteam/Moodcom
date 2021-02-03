@@ -30,12 +30,19 @@ export class UrlComponent implements OnInit {
     this.videoService.emitVideos();
   }
 
+  /**
+   * PErmet d'initialiser le formulaire (l'URL)
+   */
   initForm() {
     this.videoForm = this.formBuilder.group({
       urlVideo: ['', Validators.required]
     });
   }
 
+  /**
+   * Méthode qui permet d'ajouter la vidéo Youtube à la liste à partir de son URL.
+   * Elle n'est pas ajoutée si elle est déjà présente et une erreur est renvoyée
+   */
   addVideo() {
     const videoUrl = this.videoForm.get('urlVideo').value;
     const video = new Video(this.videoService.videos.length, videoUrl);
@@ -47,6 +54,10 @@ export class UrlComponent implements OnInit {
     this.videoForm.reset();
   }
 
+  /**
+   * Méthode qui permet de rechercher la liste des vidéos à partir d'un mot clé donné
+   * @param value le mot clé
+   */
   searchListYoutubeObs(value: string): Observable<any> {
     const params = new HttpParams()
       .set('part', 'snippet')
@@ -58,6 +69,11 @@ export class UrlComponent implements OnInit {
       .get<any[]>('https://youtube.googleapis.com/youtube/v3/search', {params});
   }
 
+  /**
+   * Méthode qui va remplir l'autocomplete à partir d'un mot clé donné (sauf si c'est déjà une URL)
+   *
+   * @param $event l'évemement lors de l'ajout d'une lettre dans l'URL
+   */
   onListSearches($event: any) {
     let value = '';
     value += $event.target.value;

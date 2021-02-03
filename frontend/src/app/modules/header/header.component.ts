@@ -165,7 +165,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             video.comments = pathToSentiment['commentCount'];
             videos.push(video);
           }
-          this.analyzeService.addNewHistory(new History(date, videos));
+          this.analyzeService.addNewHistory(new History(date, videos), true);
         }
       }
     });
