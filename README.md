@@ -12,7 +12,7 @@ git clone https://github.com/Moodcom-Coreteam/Moodcom.git
 ```
 
 ## Usage
-Our website is actually available only [here](https://moodcom.ew.r.appspot.com/ "Moodcom's website")
+Our website is actually available online [here](https://moodcom.ew.r.appspot.com/ "Moodcom's website").
 
 ## Analysis part
 
