@@ -49,13 +49,17 @@ export class VideosService {
   dateMyFormat(date: Date) {
     var dateDay = date.getDate().toString();
     var dateMonth = (date.getMonth() + 1).toString();
+    var dateMinutes = (date.getMinutes()).toString();
     if (dateDay.length == 1) {
       dateDay = '0' + dateDay;
     }
     if (dateMonth.length == 1) {
       dateMonth = '0' + dateMonth;
     }
-    return dateDay + '/' + dateMonth + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
+    if (dateMinutes.length == 1) {
+      dateMinutes = '0' + dateMinutes;
+    }
+    return dateDay + '/' + dateMonth + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + dateMinutes;
   }
 
   /**
@@ -147,7 +151,6 @@ export class VideosService {
    * Emit les dates
    */
   emitDates() {
-    console.log(this.dates);
     this.datesSubject.next(this.dates);
   }
 }

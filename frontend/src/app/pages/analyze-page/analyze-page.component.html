@@ -39,9 +39,9 @@
            fxLayout.lt-sm="column"
            fxLayoutGap="20px"
            fxLayoutAlign="flex-start">
-        <app-spiderweb-chart fxFlex="calc (50% - 50px)" *ngIf="withHistory" [videos]="videos" [date]="dates[0]"></app-spiderweb-chart>
+        <app-spiderweb-chart fxFlex="calc (50% - 50px)" *ngIf="withHistory" [videos]="videos" [withHistory]="withHistory" [date]="dates[0]" ></app-spiderweb-chart>
 
-        <app-spiderweb-chart fxFlex="calc (50% - 50px)" [videos]="videos" [withHistory]="false" [date]="dates[1]"></app-spiderweb-chart>
+        <app-spiderweb-chart fxFlex="calc (50% - 50px)" [videos]="videos" [withHistory]="withHistory" [date]="dates[1]"></app-spiderweb-chart>
         <app-stacked-column-chart *ngIf="!withHistory" [videos]="videos" [withHistory]="false"
                                   fxFlex="calc (50% - 20px)"
                                   fxFlex.lt-md="calc (50% - 20px)"
