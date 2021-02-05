@@ -82,7 +82,7 @@ npm install
 
 And then run it locally using the following command:
 ```sh
-ng serve
+ionic serve
 ```
 
 ## Backend part
